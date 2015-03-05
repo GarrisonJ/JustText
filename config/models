@@ -9,8 +9,7 @@ Email
     verkey Text Maybe
     UniqueEmail email
 Message
-    user UserId Eq In
-    content String
+    content Textarea
     timestamp UTCTime Desc
 Follow
     follower UserId Eq
