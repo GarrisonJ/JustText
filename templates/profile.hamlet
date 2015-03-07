@@ -1,0 +1,8 @@
+<h1>Just text
+
+
+
+$forall Entity _ msg <- messages
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div #message>#{show(messageTimestamp msg)} #{show(messageUser msg)} #{messageContent msg} 

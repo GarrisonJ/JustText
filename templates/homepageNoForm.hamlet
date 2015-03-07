@@ -7,11 +7,6 @@
     $nothing
             <p class="navbar-text navbar-right"><a href=@{AuthR LoginR} class="navbar-link">Login</a>
 
-<form method=post action=@{HomeR}#form enctype=#{formEnctype}>
-    ^{formWidget}
-    <button .btn .btn-primary type="submit">
-        Post <span class="glyphicon glyphicon-upload"></span>
-
 $forall Entity _ msg <- messages
     <div class="panel panel-default">
       <div class="panel-body">
