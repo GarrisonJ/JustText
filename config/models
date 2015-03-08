@@ -3,10 +3,10 @@ User
     password Text Maybe
     UniqueUser ident
     deriving Typeable
-Email
+Profile
     email Text
-    user UserId Maybe
-    verkey Text Maybe
+    username Text
+    user UserId
     UniqueEmail email
 Message
     content Textarea

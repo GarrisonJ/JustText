@@ -1,0 +1,12 @@
+<h1>Just text
+
+$maybe Entity _ p <- profile
+  <h2> #{show(profileUsername p)}
+$nothing
+
+
+<form method=post action=@{SettingsR}#form enctype=#{formEnctype}>
+    ^{formWidget}
+    <button .btn .btn-primary type="submit">
+        Post <span class="glyphicon glyphicon-upload"></span>
+

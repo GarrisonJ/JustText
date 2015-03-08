@@ -1,8 +1,11 @@
 <h1>Just text
 
-
+$maybe Entity _ p <- profile
+  <h2> #{profileUsername p}
+$nothing
 
 $forall Entity _ msg <- messages
     <div class="panel panel-default">
       <div class="panel-body">
-        <div #message>#{show(messageTimestamp msg)} #{show(messageUser msg)} #{messageContent msg} 
+        <div #message>#{messageContent msg} 
+      <div class="panel-footer">#{show(messageTimestamp msg)}
