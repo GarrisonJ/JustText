@@ -1,4 +1,12 @@
-<h1>Just text
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href=@{HomeR}>Just Text
+    $maybe _ <- mauth
+            <p class="navbar-text navbar-right"><a href=@{AuthR LogoutR} class="navbar-link">Logout</a>
+            <p class="navbar-text navbar-right"><a href=@{SettingsR} class="navbar-link">Settings</a>
+    $nothing
+            <p class="navbar-text navbar-right"><a href=@{AuthR LoginR} class="navbar-link">Login</a>
 
 $maybe Entity _ p <- profile
   <h2> #{profileUsername p}

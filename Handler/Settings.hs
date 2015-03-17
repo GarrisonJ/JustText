@@ -4,6 +4,7 @@ import Import
 
 getSettingsR :: Handler Html
 getSettingsR = do
+    mauth <- maybeAuth
     userId <- requireAuthId
     profile <- runDB $ selectFirst [ProfileUser ==. userId] []
     (formWidget, formEnctype) <- generateFormPost $ settingsForm userId
@@ -18,8 +19,7 @@ postSettingsR = do
     ((pdeta, _), _) <- runFormPost $ settingsForm userId
     case pdeta of 
         FormSuccess a -> do 
-                    let e = profileEmail a
-                    _ <- runDB $ deleteWhere [ProfileEmail ==. e]
+                    _ <- runDB $ deleteWhere [ProfileUser ==. userId]
                     _ <- runDB $ insert a
                     setMessage "Profile updated"
         FormFailure t -> setMessage $ toHtml $ show t ++ " D:"

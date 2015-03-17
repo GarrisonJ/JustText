@@ -1,0 +1,7 @@
+<h1> Just Text
+<h2> A place for <strike>photos</strike>, <strike>videos</strike>, <strike>music</strike>, and text.
+
+$maybe _ <- mauth
+  <h2><a href=@{AuthR LogoutR}>Logout</a>
+$nothing
+  <h2><a href=@{AuthR LoginR}>Login</a>
