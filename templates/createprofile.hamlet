@@ -8,13 +8,12 @@
     $nothing
             <p class="navbar-text navbar-right"><a href=@{AuthR LoginR} class="navbar-link">Login</a>
 
-<form method=post action=@{HomeR}#form enctype=#{formEnctype}>
+$maybe Entity _ p <- profile
+  <h2> #{profileUsername p}
+$nothing
+
+<form method=post action=@{SettingsR}#form enctype=#{formEnctype}>
     ^{formWidget}
     <button .btn .btn-primary type="submit">
-        Post <span class="glyphicon glyphicon-upload"></span>
+      Submit
 
-$forall (E.Value content, E.Value timestamp, E.Value username, E.Value userid) <- messages
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <div #message>#{content} 
-      <div class="panel-footer">#{show(timestamp)} | <a href=@{ProfileR userid}> #{username} </a>
