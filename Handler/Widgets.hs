@@ -51,7 +51,7 @@ navbar mauth = toWidget [hamlet|
           <div class="row">
             <nav>
               <div .nav-wrapper .grey .lighten-3>
-                <av href=@{HomeR} .brand-logo>&nbsp;&#9646;&#9646;&#9646;
+                <a href=@{HomeR} .brand-logo>&nbsp;&#9646;&#9646;&#9646;
                 <ul .right>
                   $maybe (Entity id _) <- mauth
                     <li>
