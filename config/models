@@ -9,11 +9,15 @@ Profile
     user UserId
     UniqueEmail email
 Message
-    content Textarea
+    content Markdown
     user UserId
     timestamp UTCTime Desc
 Follow
     follower UserId Eq
     followee UserId
-
+    FollowStatus follower followee
+    deriving Show
+Like
+    lover UserId Eq
+    message MessageId
  -- By default this file is used in Model.hs (which is imported by Foundation.hs)

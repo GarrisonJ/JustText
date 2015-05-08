@@ -1,0 +1,25 @@
+$maybe (Entity _ u) <- user
+  <p>Logged in as #{userIdent u}
+  <p>
+    <a href=@{AuthR LogoutR}>Logout
+$nothing
+  <div .container>
+    <div .row>
+    <div .row>
+      <h1 .center .white-text>&#9646;&#9646;&#9646;
+      <h1 .center .white-text style="font-weight:200;">Just Text
+        <sub .white-text style="font-weight:200; font-size:20%;">beta
+    <div .row>
+      <div .col .s12>
+        <div .card .z-depth-1>
+          <div .card-content .z-depth-1>
+            <h2 id="tell-your-story-in-markdown">Your story in Markdown
+            <p>Don’t know Markdown? That’s okay, it’s easy!
+            <blockquote>
+              <p>“Sucking at something is the first step to becoming sorta good at something.” - Jake the dog
+          <div class="card-action">
+            ^{authLinkWidget}
+
+
+
+

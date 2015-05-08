@@ -24,6 +24,12 @@ library
                      Handler.Home
                      Handler.Profile
                      Handler.Settings
+                     Handler.Paginates
+                     Handler.Widgets
+                     Handler.Message
+                     Handler.Shapes
+                     Handler.Landing
+                     Handler.Like
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT
@@ -84,6 +90,12 @@ library
                  , vector
                  , time
                  , esqueleto
+                 , yesod-markdown
+                 , yesod-pagination
+                 , gravatar
+                 , random
+                 , pandoc
+                 , pandoc-types
 
 executable         justtext
     if flag(library-only)

@@ -1,19 +1,43 @@
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href=@{HomeR}>Just Text
-    $maybe _ <- mauth
-            <p class="navbar-text navbar-right"><a href=@{AuthR LogoutR} class="navbar-link">Logout</a>
-            <p class="navbar-text navbar-right"><a href=@{SettingsR} class="navbar-link">Settings</a>
-    $nothing
-            <p class="navbar-text navbar-right"><a href=@{AuthR LoginR} class="navbar-link">Login</a>
+^{navbar mauth}
 
 $maybe Entity _ p <- profile
-  <h2> #{profileUsername p}
+  <div .row>
+    <div .col .s12>
+      <div .row>
+      <div .row>
+        <h2 .center-align> #{profileUsername p}
+      <div .row>
+      <div .row>
+      <div .row>
+      <div .row>
+        <div .center-align>
+          <img src=#{gravatar def (profileEmail p) ++ "?s=200"} .circle .responsive-img .z-depth-1>
+      <div .row>
+      <div .row>
+      <div .row>
+      <div .row>
+      <div .row>
+        <div .center-align>
+          $maybe id <- mauth
+            $maybe _ <- oldFollowStatus
+              <form method=post action=@{ProfileR userId}#form enctype=#{formEnctype}>
+                  <div>
+                    ^{formWidget}
+                  <div>
+                    <button .btn type="submit">Unfollow
+            $nothing
+              <form method=post action=@{ProfileR userId}#form enctype=#{formEnctype}>
+                  <div>
+                    ^{formWidget}
+                  <div>
+                    <button .btn type="submit">Follow
+          $nothing
+                  <button .btn .disabled type="submit">Follow
 $nothing
 
-$forall Entity _ msg <- messages
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <div #message>#{messageContent msg} 
-      <div class="panel-footer">#{show(messageTimestamp msg)}
+<ul .collection>
+  $forall Entity _ msg <- messages
+    <li .collection-item>
+      <div .col>
+        <div .row #message>#{ markdownToHtml (Markdown (unTextarea (messageContent msg)))}
+        <div .center-align .grey-text .text-lighten-1>#{formatTime defaultTimeLocale "%D" (messageTimestamp msg)}

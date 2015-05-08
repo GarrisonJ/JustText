@@ -1,0 +1,7 @@
+^{navbar mauth}
+
+$maybe (Entity messageId msg) <- message
+  $maybe (Entity _ c) <- creator
+    ^{renderMessageW msg messageId mauth c userLiked numLikes}
+  $nothing
+$nothing

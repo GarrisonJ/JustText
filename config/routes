@@ -4,6 +4,11 @@
 /favicon.ico FaviconR GET
 /robots.txt RobotsR GET
 
-/ HomeR GET POST
-/profile/#UserId ProfileR GET
-/settings SettingsR GET POST
+/                     HomeR          GET POST
+/profile/#UserId      ProfileR       GET POST
+/profile/#UserId/#Int ProfilePageR   GET
+/settings             SettingsR      GET POST
+/page/#Int            PaginatesR     GET
+/message/#MessageId   MessageR       GET DELETE
+/welcome              LandingR       GET
+/like/#MessageId      LikeR          POST DELETE

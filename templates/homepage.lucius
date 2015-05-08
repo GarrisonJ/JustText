@@ -4,3 +4,6 @@ h1 {
 h2##{aDomId} {
     color: #990
 }
+img {
+  max-width: 100%;
+}

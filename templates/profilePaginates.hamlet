@@ -1,0 +1,56 @@
+^{navbar mauth}
+
+$maybe Entity _ p <- profile
+  <div .row>
+    <div .col .s12>
+      <div .row>
+      <div .row>
+        <h2 .center-align> #{profileUsername p}
+      <div .row>
+      <div .row>
+      <div .row>
+      <div .row>
+        <div .center-align>
+          <img src=#{gravatar gravatarSettings (profileEmail p)} .circle .responsive-img .z-depth-1>
+      <div .row>
+      <div .row>
+      <div .row>
+      <div .row>
+      <div .row>
+        <div .center-align>
+          $maybe (Entity id _ )  <- mauth
+            $if not (id == profileUser p)
+              $maybe _ <- oldFollowStatus
+                <form method=post action=@{ProfileR userId}#form enctype=#{formEnctype}>
+                    <div>
+                      ^{formWidget}
+                    <div>
+                      <button .btn type="submit">Unfollow
+              $nothing
+                <form method=post action=@{ProfileR userId}#form enctype=#{formEnctype}>
+                    <div>
+                      ^{formWidget}
+                    <div>
+                      <button .btn type="submit">Follow
+            $else
+                  <button .btn .disabled type="submit">Follow
+          $nothing
+                  <button .btn .disabled type="submit">Follow
+$nothing
+
+<ul .collection>
+  $forall (E.Value content, E.Value timestamp, E.Value messageid) <- pageResults messages
+    <li .collection-item>
+      <div .col>
+        <div .row #message>
+          ^{renderMarkdown content}
+        <div .center-align>
+          <a href=@{MessageR messageid} .grey-text .text-lighten-1>
+            #{formatTime defaultTimeLocale "%D" (timestamp)}
+
+<div class="row">
+  <ul class="pagination">
+    $maybe p <- previousPage messages
+      <li class="waves-effect"><a href=@{p}><i class="mdi-navigation-chevron-left"></i></a>
+    $maybe n <- nextPage messages
+      <li class="waves-effect"><a href=@{n}><i class="mdi-navigation-chevron-right"></i></a>

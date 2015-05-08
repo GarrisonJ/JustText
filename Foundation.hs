@@ -60,12 +60,15 @@ instance Yesod App where
         -- you to use normal widget features in default-layout.
 
         pc <- widgetToPageContent $ do
-            addStylesheet $ StaticR css_bootstrap_css
+            addScriptRemote "http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"
+            addStylesheet $ StaticR materialize_css_materialize_css
+            addStylesheet $ StaticR css_my_css
+            addScript $ StaticR materialize_js_materialize_js
             $(widgetFile "default-layout")
         withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
 
     -- The page to be redirected to when authentication is required.
-    authRoute _ = Just $ AuthR LoginR
+    authRoute _ = Just $ LandingR
 
     -- Routes not requiring authentication.
     isAuthorized (AuthR _) _ = return Authorized

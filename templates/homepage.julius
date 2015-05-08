@@ -1,1 +1,23 @@
-document.getElementById(#{toJSON aDomId}).innerHTML = "This text was added by the Javascript part of the homepage widget.";
+$(function(){
+    function confirmDelete(link) {
+        if (confirm("Are you sure you want to delete this post?")) {
+            deleteMessage(link);
+        };
+    }
+    function deleteMessage(link) {
+        $.ajax({
+            type: "DELETE",
+            url: link.attr("message-url"),
+        }).done(function(msg) {
+            link.closest(".panel").remove();
+        });
+    }
+    $("a.delete").click(function() {
+        confirmDelete($(this));
+        return false;
+    });
+});
+
+$(document).ready(function(){
+  $('.modal-trigger').leanModal();
+});
