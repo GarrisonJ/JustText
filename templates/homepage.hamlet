@@ -1,12 +1,13 @@
 ^{navbar mauth}
 
-<div class="row">
-  <form method=post action=@{HomeR}#form enctype=#{formEnctype}>
-      <div class="col s10">
+<div .row>
+  <div .card>
+    <div .card-content>
+      <form method=post action=@{HomeR}#form enctype=#{formEnctype}>
         ^{formWidget}
-      <div class="col s1">
-        <button .btn type="submit">Post
-        <a class="modal-trigger" href="#modal1">Help
+    <div .card-action>
+      <button .btn type="submit">Post
+      <a class="modal-trigger" href="#modal1">Help
 
 <body>
     $forall (E.Value content, E.Value timestamp, E.Value messageid, E.Value username, E.Value userid) <- pageResults messages
