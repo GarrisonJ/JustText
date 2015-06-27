@@ -16,8 +16,8 @@ getMessageR messageId = do
                                 Nothing -> return False
                                 _       -> return True
     creator <- case message of
-                Nothing             -> return $ Nothing
-                (Just (Entity _ m)) -> runDB $ selectFirst [ProfileUser ==. (messageUser m)] []
+                Nothing             -> return Nothing
+                (Just (Entity _ m)) -> runDB $ selectFirst [ProfileUser ==. messageUser m] []
     defaultLayout $ do
         setTitle "Just text"
         $(widgetFile "message")
@@ -27,4 +27,4 @@ deleteMessageR messageId = do
         userId <- requireAuthId
         runDB $ deleteWhere [MessageId ==. messageId, MessageUser ==. userId]
         runDB $ deleteWhere [LikeMessage ==. messageId]
-        redirect $ HomeR
+        redirect HomeR
