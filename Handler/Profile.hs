@@ -14,7 +14,7 @@ getProfilePageR :: UserId -> Int -> Handler Html
 getProfilePageR userId page = do
     -- Get every message posted by user
     messages <- paginateWith (PageConfig 10 page (ProfileR userId) (ProfilePageR userId))$ \message -> do
-                  E.where_ $ (message ^. MessageUser E.==. E.val userId)
+                  E.where_ $ message ^. MessageUser E.==. E.val userId
                   E.orderBy [E.desc (message ^. MessageTimestamp)]
                   return
                       ( message   ^. MessageContent
