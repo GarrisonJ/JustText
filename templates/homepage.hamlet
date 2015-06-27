@@ -5,9 +5,8 @@
     <div .card-content>
       <form method=post action=@{HomeR}#form enctype=#{formEnctype}>
         ^{formWidget}
-    <div .card-action>
-      <button .btn type="submit">Post
-      <a class="modal-trigger" href="#modal1">Help
+          <button .btn type="submit">Post
+        <a class="modal-trigger" href="#modal1">Help
 
 <body>
     $forall (E.Value content, E.Value timestamp, E.Value messageid, E.Value username, E.Value userid) <- pageResults messages
