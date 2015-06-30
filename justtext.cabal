@@ -90,7 +90,7 @@ library
                  , vector
                  , time
                  , esqueleto
-                 , yesod-markdown
+                 , yesod-markdown                >= 0.2.2
                  , yesod-pagination
                  , gravatar
                  , random
