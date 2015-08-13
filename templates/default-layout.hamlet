@@ -1,3 +1,12 @@
 $maybe msg <- mmsg
-  <div class="alert alert-success" role="alert" #message>#{msg}
+  <!-- TODO: I can't find a place to turn off this message. Until then, I found this temporary fix. 
+        I had to import 'Text.Blaze.Html.Renderer.String' in Foundation.hs and 'blaze-html' as a dependency in .cabal 
+        for the renderHtml function. -->
+
+  $if ((/=) (renderHtml msg) "You are now logged in")
+    <script>
+      window.onload = function() {
+          Materialize.toast('#{msg}', 4000)
+      };
+
 ^{widget}

@@ -1,20 +1,24 @@
 Default: &defaults
-  database: justtext.sqlite3
+  user: postgres
+  password: postgres
+  host: localhost
+  port: 5432
+  database: justtext
   poolsize: 10
 
 Development:
   <<: *defaults
 
 Testing:
-  database: justtext_test.sqlite3
+  database: justtext_test
   <<: *defaults
 
 Staging:
-  database: justtext_staging.sqlite3
+  database: justtext_staging
   poolsize: 100
   <<: *defaults
 
 Production:
-  database: justtext_production.sqlite3
+  database: justtext_production
   poolsize: 100
   <<: *defaults

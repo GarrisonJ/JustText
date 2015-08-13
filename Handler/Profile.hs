@@ -7,6 +7,16 @@ import qualified Database.Esqueleto      as E
 import           Database.Esqueleto      ((^.))
 import           Yesod.Paginate
 
+getUserProfileR :: Text -> Handler Html
+getUserProfileR username = do
+  user <- runDB $ selectFirst [ProfileUsername ==. username] []
+  case user of
+    Nothing -> do
+              setMessage "That profile does not exist"
+              redirect HomeR
+    (Just (Entity _ profile)) -> do
+              getProfilePageR (profileUser profile) 0
+
 getProfileR :: UserId -> Handler Html
 getProfileR userId = getProfilePageR userId 0
 
@@ -52,7 +62,7 @@ postProfileR userId = do
         case follow of
             FormSuccess a -> do _ <- runDB $ insert a
                                 return ()
-            FormFailure t -> setMessage $ toHtml $ show t ++ " D:"
+            FormFailure t -> setMessage $ toHtml $ unwords t
             _             -> setMessage "Error"
         redirect (ProfileR userId)
 

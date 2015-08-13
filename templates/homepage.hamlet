@@ -1,55 +1,60 @@
 ^{navbar mauth}
 
-<div .row>
-  <div .card>
-    <div .card-content>
-      <form method=post action=@{HomeR}#form enctype=#{formEnctype}>
-        ^{formWidget}
-          <button .btn type="submit">Post
-        <a class="modal-trigger" href="#modal1">Help
+<div .container>
+  <div .row>
+    <div .card>
+      <div .card-content>
+        <form method=post action=@{HomeR}#form enctype=#{formEnctype}>
+          ^{formWidget}
+            <button .btn type="submit">Post
+          <a class="modal-trigger" href="#modal1">Help
 
-<body>
-    $forall (E.Value content, E.Value timestamp, E.Value messageid, E.Value username, E.Value userid) <- pageResults messages
-      <div class="panel panel-default">
-        <div class="row">
-          <div .card-panel .lighten-2 #message>
-              ^{renderMarkdown content}
-            <hr>
-            <div .panel-footer .center-align>
-              <a href=@{MessageR messageid} .grey-text .text-lighten-1>
-                #{formatTime defaultTimeLocale "%D" timestamp}
-              |
-              <a href=@{ProfileR userid} .grey-text .text-lighten-1>
-                #{username}
-              $maybe (Entity uid _) <- mauth
-                $if uid == userid
-                  |
-                  <a href=# message-url=@{MessageR messageid} .grey-text .text-lighten-1 .delete>
-                    <i class="mdi-action-delete">
-  <div class="row">
-    <ul class="pagination">
-      $maybe p <- previousPage messages
-        <li class="waves-effect"><a href=@{p}><i class="mdi-navigation-chevron-left"></i></a>
-      $maybe n <- nextPage messages
-        <li class="waves-effect"><a href=@{n}><i class="mdi-navigation-chevron-right"></i></a>
+  <body>
+      $forall (E.Value content, E.Value timestamp, E.Value messageid, E.Value username, E.Value userid) <- pageResults messages
+        <div class="panel panel-default">
+          <div class="row">
+            <div .card-panel .lighten-2 #message>
+                ^{renderMarkdown content}
+              <hr>
+              <div .panel-footer .center-align>
+                <a href=@{MessageR messageid} .grey-text .text-lighten-1>
+                  #{formatTime defaultTimeLocale "%D" timestamp}
+                |
+                <a href=@{ProfileR userid} .grey-text .text-lighten-1>
+                  #{username}
+                $maybe (Entity uid _) <- mauth
+                  $if uid == userid
+                    |
+                    <a href=# message-url=@{MessageR messageid} .grey-text .text-lighten-1 .delete>
+                      <i class="mdi-action-delete">
+    <div class="row">
+      <ul class="pagination">
+        $maybe p <- previousPage messages
+          <li class="waves-effect"><a href=@{p}><i class="mdi-navigation-chevron-left"></i></a>
+        $maybe n <- nextPage messages
+          <li class="waves-effect"><a href=@{n}><i class="mdi-navigation-chevron-right"></i></a>
 
-<div id="modal1" class="modal" style="display: none; opacity: 1; bottom: 0px;">
-  <div class="modal-content">
-    <h1> Markdown
-    <p> Everything is markdown. Here are the basics/everything you need.
+  <div id="modal1" class="modal" style="display: none; opacity: 1; bottom: 0px;">
+    <div class="modal-content">
+      <h1> Markdown
+      <p> Everything is markdown. Here are the basics/everything you need.
 
-    <h3> Headers
-    <p> # header
-    <p> ## Subheader
+      <h3> Headers
+      <p> # header
+      <p> ## Subheader
 
-    <h3> Text
-    <p> ***Bold***
-    <p> _italic_
+      <h3> Text
+      <p> **Bold**
+      <p> _italic_
 
-    <h3> Image
-    <p> ![alt text](image url)
+      <h3> Image
+      <p> ![alt text](image url)
 
-    <h3> Code
-    <p> ```Block code```
-    <p> <a href="http://daringfireball.net/projects/markdown/syntax" target="_blank"> more </a>
+      <h3> Links
+      <p> [Cool website](http://www.ttxtt.io/)
+
+      <h3> Code
+      <p> ```ruby <br> puts "That's all folks" <br>```
+
+      <p> <a href="http://daringfireball.net/projects/markdown/basics" target="_blank"> more </a>
 

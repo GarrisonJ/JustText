@@ -18,7 +18,9 @@ renderMessageW message messageId mauth creator userLiked numLikes =
           ^{renderMarkdown (messageContent message)}
       <li .collection-item .avatar>
         <img src=#{gravatar gravatarSettings (profileEmail creator)} alt="" class="circle">
-        <span .title >#{profileUsername creator}
+        <span .title>
+          <a href=@{ProfileR (profileUser creator)} .grey-text .text-lighten-1>
+            #{profileUsername creator}
         <p> #{getTitle (messageContent message)} <br>
             #{formatTime defaultTimeLocale "%D" (messageTimestamp message)}
         <span .secondary-content>
@@ -57,9 +59,9 @@ navbar mauth = toWidget [hamlet|
                     <li>
                       <a href=@{ProfileR id}>Profile
                     <li>
-                      <a href=@{AuthR LogoutR}>Logout
-                    <li>
                       <a href=@{SettingsR}>Settings
+                    <li>
+                      <a href=@{AuthR LogoutR}>Logout
                   $nothing
                     <li>
                       <a href=@{LandingR}><i>Login</i>

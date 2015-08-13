@@ -1,11 +1,18 @@
 ^{navbar mauth}
 
-$maybe Entity _ p <- profile
-  <div .row> 
-    <div .col> <h2> #{profileUsername p}
-$nothing
+<div .container>
+  $maybe Entity _ p <- profile
+    <div .col> 
+      <div .row>
+        <h2  .center-align> #{profileUsername p}
+      <div .row>
+        <div .center-align>
+          <img src=#{gravatar gravatarSettings (profileEmail p)} .circle .responsive-img .z-depth-1>
+      <div .row>
+        <p .center-align> Change your profile image at <a href="https://en.gravatar.com/">gravatar</a>
+  $nothing
 
-<form method=post action=@{SettingsR}#form enctype=#{formEnctype}>
-    ^{formWidget}
-    <button .btn .btn-primary type="submit">
-      Submit
+  <form method=post action=@{SettingsR}#form enctype=#{formEnctype}>
+      ^{formWidget}
+      <button .btn .btn-primary type="submit">
+        Submit

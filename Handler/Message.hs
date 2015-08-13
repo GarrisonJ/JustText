@@ -5,9 +5,9 @@ import Handler.Widgets
 
 getMessageR :: MessageId -> Handler Html
 getMessageR messageId = do
-    mauth   <- maybeAuth
-    message <- runDB $ selectFirst [MessageId ==. messageId] []
-    numLikes <- runDB $ count [LikeMessage ==. messageId]
+    mauth     <- maybeAuth
+    message   <- runDB $ selectFirst [MessageId ==. messageId] []
+    numLikes  <- runDB $ count [LikeMessage ==. messageId]
     userLiked <- case mauth of
                    Nothing  -> return False
                    (Just (Entity m _)) -> do

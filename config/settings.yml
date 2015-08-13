@@ -4,18 +4,22 @@
 static-dir:     "_env:STATIC_DIR:static"
 host:           "_env:HOST:*4" # any IPv4 host
 port:           "_env:PORT:3000"
-approot:        "_env:APPROOT:http://www.ttxtt.io:3000"
+approot:        "_env:APPROOT:http://localhost:3000"
 ip-from-header: "_env:IP_FROM_HEADER:false"
 
 # Optional values with the following production defaults.
 # In development, they default to the inverse.
 #
 # development: false
-# detailed-logging: false
-# should-log-all: false
+detailed-logging: true
+should-log-all: true
 # reload-templates: false
 # mutable-static: false
 # skip-combining: false
+
+#database:
+#  database: "_env:SQLITE_DATABASE:JustText.sqlite3"
+#  poolsize: "_env:SQLITE_POOLSIZE:10"
 
 database:
   user:     "_env:PGUSER:temp"

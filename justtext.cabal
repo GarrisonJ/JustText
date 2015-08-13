@@ -66,7 +66,7 @@ library
                  , bytestring                    >= 0.9        && < 0.11
                  , text                          >= 0.11       && < 2.0
                  , persistent                    >= 2.0        && < 2.2
-                 , persistent-sqlite             >= 2.1.1      && < 2.2
+                 , persistent-postgresql         >= 2.1.1      && < 2.2
                  , persistent-template           >= 2.0        && < 2.2
                  , template-haskell
                  , shakespeare                   >= 2.0        && < 2.1
@@ -89,13 +89,14 @@ library
                  , containers
                  , vector
                  , time
-                 , esqueleto
+                 , esqueleto                     >= 2.2.10
                  , yesod-markdown                >= 0.2.2
                  , yesod-pagination
                  , gravatar
                  , random
                  , pandoc
                  , pandoc-types
+                 , blaze-html
 
 executable         justtext
     if flag(library-only)

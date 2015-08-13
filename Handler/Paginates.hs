@@ -17,8 +17,8 @@ getPaginatesR page = do
       Nothing -> runDB $ insert_ $ Follow uid uid
       (Just _) -> return ()
     messages <- paginateWith (PageConfig 10 page HomeR PaginatesR)$
-                \((message `E.InnerJoin` profile) `E.InnerJoin` follow) -> do
-                  E.on $ (message ^. MessageUser E.==. profile ^. ProfileUser) E.&&.
+                \((message `E.CrossJoin` profile) `E.CrossJoin` follow) -> do
+                  E.where_ $ (message ^. MessageUser E.==. profile ^. ProfileUser) E.&&.
                          (follow  ^. FollowFollowee E.==. profile ^. ProfileUser) E.&&.
                          (follow  ^. FollowFollower E.==. E.val uid)
                   E.orderBy [E.desc (message ^. MessageTimestamp)]

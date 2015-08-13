@@ -6,9 +6,9 @@ import Yesod.Auth.BrowserId
 authLinkWidget :: Widget
 authLinkWidget = do
     onclick <- createOnClick def AuthR
-    loginIcon <- return $ PluginR "browserid" ["static", "sign-in.png"]
+    let loginIcon = PluginR "browserid" ["static", "sign-in.png"]
     [whamlet|
-      <div><a href="javascript:#{onclick}()"><img src=@{AuthR loginIcon}></a>
+      <div .center><a href="javascript:#{onclick}()" class="waves-effect waves-light btn-large">Login/Logout</a>
     |]
 
 getLandingR :: Handler Html

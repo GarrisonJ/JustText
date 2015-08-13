@@ -3,6 +3,7 @@ module Foundation where
 import Import.NoFoundation
 import Database.Persist.Sql (ConnectionPool, runSqlPool)
 import Text.Hamlet          (hamletFile)
+import Text.Blaze.Html.Renderer.String (renderHtml)
 import Text.Jasmine         (minifym)
 import Yesod.Auth.BrowserId (authBrowserId)
 import Yesod.Default.Util   (addStaticContentExternal)
@@ -60,7 +61,7 @@ instance Yesod App where
         -- you to use normal widget features in default-layout.
 
         pc <- widgetToPageContent $ do
-            addScriptRemote "http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"
+            addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"
             addStylesheet $ StaticR materialize_css_materialize_css
             addStylesheet $ StaticR css_my_css
             addScript $ StaticR materialize_js_materialize_js

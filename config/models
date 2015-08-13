@@ -7,7 +7,7 @@ Profile
     email Text
     username Text
     user UserId
-    UniqueEmail email
+    UniqueUsername username
 Message
     content Markdown
     user UserId

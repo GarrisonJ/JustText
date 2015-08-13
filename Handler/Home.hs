@@ -14,7 +14,7 @@ postHomeR = do
     case message of
         FormSuccess a -> do _ <- runDB $ insert a
                             return ()
-        FormFailure t -> setMessage $ toHtml $ show t ++ " D:"
+        FormFailure t -> setMessage $ toHtml $ unwords t
         _             -> setMessage "Error"
     redirect (PaginatesR 0)
 
