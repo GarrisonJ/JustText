@@ -4,15 +4,20 @@
     <p>
       <a href=@{AuthR LogoutR}>Logout
   $nothing
-    <div .container>
       <div .row>
       <div .row>
-        <h1 .center .white-text>&#9646;&#9646;&#9646;
-        <h1 .center .white-text style="font-weight:200;">Just Text
-          <sub .white-text style="font-weight:200; font-size:20%;">beta
-      <div .row>
-        <div .col .s12>
-          <div .card .z-depth-1>
-              <div .row>
-              ^{authLinkWidget}
-              <div .row>
+        <div .col .l6 .hide-on-med-and-down>
+          <h3 .center .white-text style="font-weight:200;">Beautiful
+          <h3 .center .white-text style="font-weight:200;">Markdown
+          <h3 .center .white-text style="font-weight:200;">Post
+        <div .col .l6 .s12 .card-panel>
+          <div .row>
+            <h1 .center .grey-text .text-lighten-2>&#9646;&#9646;&#9646;
+            <h1 .center .grey-text .text-lighten-2 style="font-weight:200;">Just Text
+              <sub .grey-text style="font-weight:200; font-size:20%;">beta
+          <div .row>
+            <div .col .s12>
+              <div>
+                  <div .row>
+                  ^{authLinkWidget}
+                  <div .row>

@@ -25,6 +25,6 @@ getMessageR messageId = do
 deleteMessageR :: MessageId -> Handler Html
 deleteMessageR messageId = do
         userId <- requireAuthId
-        runDB $ deleteWhere [MessageId ==. messageId, MessageUser ==. userId]
         runDB $ deleteWhere [LikeMessage ==. messageId]
+        runDB $ deleteWhere [MessageId ==. messageId, MessageUser ==. userId]
         redirect HomeR

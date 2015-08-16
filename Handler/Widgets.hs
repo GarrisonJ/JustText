@@ -13,7 +13,7 @@ renderMessageW message messageId mauth creator userLiked numLikes =
   let gravatarSettings = def{gDefault=Just MM}
   in toWidget [whamlet|
     <ul .collection .z-depth-1>
-      <li class="collection-item">
+      <li .collection-item style="padding:0.1% 0% 0% 0%;">
         <div #message>
           ^{renderMarkdown (messageContent message)}
       <li .collection-item .avatar>
