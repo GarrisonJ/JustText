@@ -1823,7 +1823,7 @@ code,
 kbd,
 pre,
 samp {
-  font-family: monospace, monospace;
+  font-family: hack, monospace;
   font-size: 1em; }
 
 /* Forms

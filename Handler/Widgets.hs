@@ -39,6 +39,7 @@ renderMessageW message messageId mauth creator userLiked numLikes =
 renderMarkdown :: Markdown -> Widget
 renderMarkdown m = do
               addStylesheet $ StaticR css_code_css
+              addStylesheetRemote $ "https://cdn.jsdelivr.net/font-hack/2.010/css/hack-extended.min.css"
               addScriptRemote "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
               toWidget $ writePandoc yesodDefaultWriterOptions{writerHTMLMathMethod=(MathJax "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")} pan
         where
