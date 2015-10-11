@@ -61,6 +61,3 @@ settingsForm user mprofile = renderDivs $ Profile
     validateUsername u = if (all (\x -> x `elem` validCharacters) u) && (length u <= 16)
                             then Right u
                             else Left errorMessage
-
-
-

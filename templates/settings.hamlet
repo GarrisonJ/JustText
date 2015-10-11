@@ -10,6 +10,15 @@
           <img src=#{gravatar gravatarSettings (profileEmail p)} .circle .responsive-img .z-depth-1>
       <div .row>
         <p .center-align> Change your profile image at <a href="https://en.gravatar.com/">gravatar</a>
+      <div .row>
+        <div .row>
+          <div .center-align>
+            <p> This URL will never change: 
+              <a .center-align href=@{ProfileR (profileUser p)}> @{ProfileR (profileUser p)}
+        <div .row>
+          <div .center-align>
+            <p> This URL will change when you change your username: 
+              <a .center-align href=@{UserProfileR (profileUsername p)}>@{UserProfileR (profileUsername p)}
   $nothing
 
   <form method=post action=@{SettingsR}#form enctype=#{formEnctype}>
