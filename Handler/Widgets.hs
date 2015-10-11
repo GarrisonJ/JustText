@@ -4,38 +4,72 @@ module Handler.Widgets where
 import Import
 import Yesod.Markdown
 import Network.Gravatar
-import Text.Pandoc.Options
-import Text.Pandoc.Definition
+import Text.Pandoc
 import Text.Pandoc.Shared
+
+data TwitterMeta = TwitterMeta { creator :: Text
+                               , title :: String
+                               , description :: String
+                               , image :: String
+                               }
+
+renderTwitterMetta :: Message -> Profile -> Widget
+renderTwitterMetta m p = do
+  let tm = getTwitterMetta m p
+    in toWidget [whamlet|
+                <meta name="twitter:card" content="summary_large_image">
+                <meta name="twitter:site" content="ttxtt.io">
+                <meta name="twitter:creator" content="#{creator tm}">
+                <meta name="twitter:title" content="#{title tm}">
+                <meta name="twitter:description" content="#{description tm}">
+                <meta name="twitter:image" content="#{image tm}">
+                |]
+
+getTwitterMetta :: Message -> Profile -> TwitterMeta
+getTwitterMetta m creator =
+            TwitterMeta {
+              creator     = profileUsername creator
+            , title       = getTitle (messageContent m)
+            , description = "ttxtt.io post"
+            , image       = extractImages (parseMarkdown def (messageContent m))
+            }
+
+extractImage :: Inline -> [String]
+extractImage (Image _ (u,_)) = [u]
+extractImage _ = []
+
+extractImages :: Pandoc -> String
+extractImages m = case queryWith extractImage m of
+                    (x:_) -> x
+                    _ -> ""
+
+getTitle :: Markdown -> String
+getTitle m = case (parseMarkdown def m) of
+              (Pandoc meta _) -> stringify $ docTitle meta
+
 
 renderMessageW :: Message -> MessageId -> Maybe a -> Profile -> Bool -> Int -> Widget
 renderMessageW message messageId mauth creator userLiked numLikes =
   let gravatarSettings = def{gDefault=Just MM}
-  in toWidget [whamlet|
-    <ul .collection .z-depth-1>
-      <li .collection-item>
-        <div #message>
-          ^{renderMarkdown (messageContent message)}
-      <li .collection-item .avatar>
-        <img src=#{gravatar gravatarSettings (profileEmail creator)} alt="" class="circle">
-        <span .title>
-          <a href=@{ProfileR (profileUser creator)} .grey-text .text-lighten-1>
-            #{profileUsername creator}
-        <p> #{getTitle (messageContent message)} <br>
-            #{formatTime defaultTimeLocale "%D" (messageTimestamp message)}
-        <span .secondary-content>
-          <ul>
-            ^{likeButton messageId userLiked numLikes}
-            <!--
-            $maybe _ <- mauth
-              <li>
-                <a href=# message-url=@{MessageR messageId} .delete .secondary-content .right-align>
-                  <i class="mdi-action-delete">
-            $nothing
-            -->
-  |]
+  in do
+    renderTwitterMetta message creator
+    toWidget [whamlet|
+      <ul .collection .z-depth-1>
+        <li .collection-item>
+          <div #message>
+            ^{renderMarkdown (messageContent message)}
+        <li .collection-item .avatar>
+          <img src=#{gravatar gravatarSettings (profileEmail creator)} alt="" class="circle">
+          <span .title>
+            <a href=@{ProfileR (profileUser creator)} .grey-text .text-lighten-1>
+              #{profileUsername creator}
+          <p> #{getTitle (messageContent message)} <br>
+              #{formatTime defaultTimeLocale "%D" (messageTimestamp message)}
+          <span .secondary-content>
+            <ul>
+              ^{likeButton messageId userLiked numLikes}
+    |]
 
--- TODO: Currenty we parse markdown twice, do it once
 renderMarkdown :: Markdown -> Widget
 renderMarkdown m = do
               addStylesheet $ StaticR css_code_css
@@ -44,10 +78,6 @@ renderMarkdown m = do
               toWidget $ writePandoc yesodDefaultWriterOptions{writerHTMLMathMethod=(MathJax "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")} pan
         where
           pan = parseMarkdown yesodDefaultReaderOptions m
-
-getTitle :: Markdown -> String
-getTitle m = case (parseMarkdown def m) of
-              (Pandoc meta _) -> stringify $ docTitle meta
 
 navbar :: Maybe (Entity User) -> Widget
 navbar mauth = toWidget [hamlet|

@@ -7,6 +7,7 @@ Profile
     email Text
     username Text
     user UserId
+    bio Text Maybe
     UniqueUsername username
 Message
     content Markdown

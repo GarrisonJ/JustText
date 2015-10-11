@@ -17,6 +17,11 @@
                 ^{renderMarkdown content}
               <hr>
               <div .panel-footer .center-align>
+                $with title <- getTitle content
+                  $if title /= ""
+                    <a href=@{MessageR messageid} .grey-text .text-lighten-1>
+                      #{title}
+                    |&nbsp;
                 <a href=@{MessageR messageid} .grey-text .text-lighten-1>
                   #{formatTime defaultTimeLocale "%D" timestamp}
                 |

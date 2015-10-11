@@ -46,9 +46,10 @@ postSettingsR = do
 
 settingsForm :: UserId -> Maybe Profile -> Form Profile
 settingsForm user mprofile = renderDivs $ Profile
-    <$> areq textField "Email"    (profileEmail    <$> mprofile)
+    <$> areq textField         "Email"    (profileEmail <$> mprofile)
     <*> areq usernameTextField "Username" (profileUsername <$> mprofile)
     <*> pure user
+    <*> aopt textField         "Bio"      (profileBio <$> mprofile)
   where
     errorMessage :: Text
     errorMessage = "Username can only contain only letters, numbers, and underscores. And they can only be at most 16 characters long."

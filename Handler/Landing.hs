@@ -8,7 +8,7 @@ authLinkWidget = do
     onclick <- createOnClick def AuthR
     let loginIcon = PluginR "browserid" ["static", "sign-in.png"]
     [whamlet|
-      <div .center><a href="javascript:#{onclick}()" class="waves-effect waves-light btn-large">Login/Logout</a>
+      <div .center><a href="javascript:#{onclick}()" class="waves-effect waves-light btn-large">Sign up / Log in</a>
     |]
 
 getLandingR :: Handler Html

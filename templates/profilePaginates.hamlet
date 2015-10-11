@@ -9,13 +9,13 @@
           <h2 .center-align> #{profileUsername p}
         <div .row>
         <div .row>
-        <div .row>
-        <div .row>
           <div .center-align>
             <img src=#{gravatar gravatarSettings (profileEmail p)} .circle .responsive-img .z-depth-1>
         <div .row>
         <div .row>
-        <div .row>
+        <div .center-align>
+          $maybe pbio <- profileBio p
+            <p .flow-text>#{toHtml (pbio)}
         <div .row>
         <div .row>
           <div .center-align>
@@ -45,9 +45,23 @@
         <div .col>
           <div .row #message>
             ^{renderMarkdown content}
+
           <div .center-align>
+
+            $with title <- getTitle content
+              $if title /= ""
+                <a href=@{MessageR messageid} .grey-text .text-lighten-1>
+                  #{title}
+                |&nbsp;
+
             <a href=@{MessageR messageid} .grey-text .text-lighten-1>
               #{formatTime defaultTimeLocale "%D" (timestamp)}
+
+            $maybe (Entity uid _) <- mauth
+              $if uid == userId
+                |
+                <a href=# message-url=@{MessageR messageid} .grey-text .text-lighten-1 .delete>
+                  <i class="mdi-action-delete">
 
   <div class="row">
     <ul class="pagination">
