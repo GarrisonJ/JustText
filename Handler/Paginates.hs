@@ -38,11 +38,17 @@ getPaginatesR page = do
                       redirect SettingsR
         Just _ -> defaultLayout $ do
                               aDomId <- newIdent
+                              addScript $ StaticR vue_min_js
+                              addScript $ StaticR node_modules_marked_marked_min_js
+                              addScript $ StaticR node_modules_highlightjs_highlight_pack_min_js
+                              addStylesheet $ StaticR node_modules_highlightjs_styles_arta_css
                               setTitle "Just text"
                               $(widgetFile "homepage")
 
 messageForm :: UserId -> Form Message
 messageForm user = renderDivs $ Message
-    <$> areq markdownField "" Nothing
+    <$> areq markdownField markSettings Nothing
     <*> pure user
     <*> lift (liftIO getCurrentTime)
+  where
+    markSettings = "" {fsAttrs = [("v-model", "input"), ("debounce", "300")], fsId = Just "textInput"}

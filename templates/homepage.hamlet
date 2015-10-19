@@ -5,13 +5,21 @@
     <div .card>
       <div .card-content>
         <form method=post action=@{HomeR}#form enctype=#{formEnctype}>
-          ^{formWidget}
-            <button .btn type="submit">Post
+          <div id="editor">
+            ^{formWidget}
+            <div .panel .panel-default>
+              <div class="row">
+                <div .card-panel .lighten-2 #preview>
+                  <div class="row">
+                  <div v-html="input | marked">
+                  <div class="row">
+
+          <button .btn type="submit">Post
           <a class="modal-trigger" href="#modal1">Help
 
   <body>
       $forall (E.Value content, E.Value timestamp, E.Value messageid, E.Value username, E.Value userid) <- pageResults messages
-        <div class="panel panel-default">
+        <div .panel .panel-default>
           <div class="row">
             <div .card-panel .lighten-2 #message>
                 ^{renderMarkdown content}
