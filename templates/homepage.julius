@@ -23,16 +23,10 @@ $(document).ready(function(){
 });
 
 $(function() {
-
-    $('#preview').hide(); //Initially form wil be hidden.
-
     $('#textInput').click(function() {
-      $('#preview').show();//Form shows on button click
-
-      });
+      $('#preview').show(); //Form shows on button click
     });
-
-
+});
 
 // Synchronous highlighting with highlight.js
 marked.setOptions({

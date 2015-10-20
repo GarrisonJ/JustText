@@ -28,6 +28,7 @@ textarea {
   padding: 20px;
 }
 
-#preview {
+div #preview {
   width: 100%;
+  display: none;
 }
