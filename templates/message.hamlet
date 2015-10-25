@@ -4,9 +4,9 @@
     <h4> <a href=@{HomeR} style="color:white;" >▮▮▮</a>
   <div .col .l8 .m12 style="padding:0;">
     <div .row>
-    $maybe (Entity messageId msg) <- message
+    $maybe msg <- message
       $maybe (Entity _ c) <- creator
-        ^{renderMessageW msg messageId mauth c userLiked numLikes}
+        ^{renderMessageW msg c userLiked numLikes}
       $nothing
     $nothing
   <div .col .l2 .hide-on-med-and-down>

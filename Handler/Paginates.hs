@@ -8,6 +8,7 @@ import           Yesod.Markdown
 import           Yesod.Paginate
 import           Handler.Widgets
 
+
 getPaginatesR :: Int -> Handler Html
 getPaginatesR page = do
     uid <- requireAuthId
@@ -17,7 +18,19 @@ getPaginatesR page = do
       Nothing -> runDB $ insert_ $ Follow uid uid
       (Just _) -> return ()
     messages <- paginateWith (PageConfig 10 page HomeR PaginatesR)$
-                \((message `E.CrossJoin` profile) `E.CrossJoin` follow) -> do
+                \((((message `E.CrossJoin` profile) `E.CrossJoin` follow)) `E.LeftOuterJoin` likes) -> do
+                  E.on (message ^. MessageId E.==. likes ^. LikeMessage)
+                  E.groupBy ( message   ^. MessageContent
+                            , message   ^. MessageTimestamp
+                            , message   ^. MessageUser
+                            , message   ^. MessageId
+                            , profile   ^. ProfileEmail
+                            , profile   ^. ProfileUsername
+                            , profile   ^. ProfileUser
+                            , profile   ^. ProfileBio
+                            )
+                  let likeCount = E.count (likes ^. LikeLover)
+                  let userLiked = E.count (likes ^. LikeLover E.==. E.val uid)
                   E.where_ $ (message ^. MessageUser E.==. profile ^. ProfileUser) E.&&.
                          (follow  ^. FollowFollowee E.==. profile ^. ProfileUser) E.&&.
                          (follow  ^. FollowFollower E.==. E.val uid)
@@ -25,10 +38,16 @@ getPaginatesR page = do
                   return
                       ( message   ^. MessageContent
                       , message   ^. MessageTimestamp
+                      , message   ^. MessageUser
                       , message   ^. MessageId
+                      , profile   ^. ProfileEmail
                       , profile   ^. ProfileUsername
                       , profile   ^. ProfileUser
+                      , profile   ^. ProfileBio
+                      , likeCount
+                      , userLiked
                       )
+
     (formWidget, formEnctype) <- generateFormPost $ messageForm uid
     -- Get profile info
     uProfile <- runDB $ selectFirst [ProfileUser ==. uid] []
@@ -42,6 +61,7 @@ getPaginatesR page = do
                               addScript $ StaticR node_modules_marked_marked_min_js
                               addScript $ StaticR node_modules_highlightjs_highlight_pack_min_js
                               addStylesheet $ StaticR node_modules_highlightjs_styles_arta_css
+                              likeButtonJulius
                               setTitle "Just text"
                               $(widgetFile "homepage")
 

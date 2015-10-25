@@ -47,28 +47,68 @@ getTitle :: Markdown -> String
 getTitle m = case (parseMarkdown def m) of
               (Pandoc meta _) -> stringify $ docTitle meta
 
+messageWhamlet :: Markdown -> Text -> UserId -> Text -> UTCTime -> MessageId -> Bool -> Int -> Widget
+messageWhamlet message email userId username timestamp messageId userLiked numLikes =
+    let gravatarSettings = def{gDefault=Just MM}
+        in toWidget [whamlet|
+            <ul .collection .z-depth-1>
+              <li .collection-item>
+                <div #message>
+                  ^{renderMarkdown message}
+              <li .collection-item .avatar>
+                <a href=@{ProfileR userId}>
+                  <img src=#{gravatar gravatarSettings email} alt="" class="circle">
+                <span .title>
+                  <a href=@{ProfileR userId} .grey-text .text-lighten-1>
+                    #{username}
+                <p>
+                  <a href=@{MessageR messageId}> #{getTitle message} <br>
+                    #{formatTime defaultTimeLocale "%D" timestamp}
+                <span .secondary-content>
+                  <ul>
+                    ^{likeButtonHamlet messageId userLiked numLikes}
+          |]
 
-renderMessageW :: Message -> MessageId -> Maybe a -> Profile -> Bool -> Int -> Widget
-renderMessageW message messageId mauth creator userLiked numLikes =
+getUserLiked :: MessageId -> UserId -> Handler Bool
+getUserLiked messageId userId = do
+  like <- runDB $ selectFirst [LikeLover ==. userId, LikeMessage ==. messageId] []
+  case like of
+    Nothing -> return False
+    Just _ -> return True
+
+getNumberOfLikes :: MessageId -> Handler Int
+getNumberOfLikes messageId = runDB $ count [LikeMessage ==. messageId]
+
+renderMessageW' :: Text -> Text -> UserId -> Maybe Text -> Markdown -> UTCTime -> MessageId -> Int -> Int -> Widget
+renderMessageW' email username userId mBio content timestamp messageId numLikes userLiked' = do
+    let gravatarSettings = def{gDefault=Just MM}
+        message          = content
+        userLiked = userLiked' > 0
+    messageWhamlet message
+                   email
+                   userId
+                   username
+                   timestamp
+                   messageId
+                   userLiked
+                   numLikes
+
+renderMessageW :: Entity Message -> Profile -> Bool -> Int -> Widget
+renderMessageW em creator userLiked numLikes =
   let gravatarSettings = def{gDefault=Just MM}
+      messageId        = entityKey em
+      message          = entityVal em
   in do
     renderTwitterMetta message creator
-    toWidget [whamlet|
-      <ul .collection .z-depth-1>
-        <li .collection-item>
-          <div #message>
-            ^{renderMarkdown (messageContent message)}
-        <li .collection-item .avatar>
-          <img src=#{gravatar gravatarSettings (profileEmail creator)} alt="" class="circle">
-          <span .title>
-            <a href=@{ProfileR (profileUser creator)} .grey-text .text-lighten-1>
-              #{profileUsername creator}
-          <p> #{getTitle (messageContent message)} <br>
-              #{formatTime defaultTimeLocale "%D" (messageTimestamp message)}
-          <span .secondary-content>
-            <ul>
-              ^{likeButton messageId userLiked numLikes}
-    |]
+    likeButtonJulius
+    messageWhamlet (messageContent message)
+                   (profileEmail creator)
+                   (profileUser creator)
+                   (profileUsername creator)
+                   (messageTimestamp message)
+                   messageId
+                   userLiked
+                   numLikes
 
 renderMarkdown :: Markdown -> Widget
 renderMarkdown m = do
@@ -98,33 +138,14 @@ navbar mauth = toWidget [hamlet|
                       <a href=@{LandingR}><i>Login</i>
          |]
 
+
 likeButton :: MessageId -> Bool -> Int -> Widget
 likeButton messageId userLiked numLikes = do
-    toWidget
-        [julius|
-                $(function(){
-                    function likeMessage(link) {
-                        $.ajax({
-                            type: "POST",
-                            url: link.attr("message-url"),
-                        }).done(function(msg) {
-                            if (link.hasClass("red-text")) {
-                              link.removeClass("red-text");
-                              link.addClass("teal-text");
-                              $(".likeCount").html(parseInt($('.likeCount').html(), 10)-1);
-                            } else {
-                              link.removeClass("teal-text");
-                              link.addClass("red-text");
-                              $(".likeCount").html(parseInt($('.likeCount').html(), 10)+1);
-                            }
-                        });
-                    }
-                    $("a.like").click(function() {
-                        likeMessage($(this));
-                        return false;
-                    });
-                });
-        |]
+  likeButtonJulius
+  likeButtonHamlet messageId userLiked numLikes
+
+likeButtonHamlet :: MessageId -> Bool -> Int -> Widget
+likeButtonHamlet messageId userLiked numLikes =
     toWidget
         [hamlet|
           <li>
@@ -136,4 +157,32 @@ likeButton messageId userLiked numLikes = do
               <a href=# message-url=@{LikeR messageId} .waves-effect .waves-light .teal-text .like>
                 <span .likeCount>#{numLikes}
                 <i .mdi-action-favorite>
+        |]
+
+likeButtonJulius :: Widget
+likeButtonJulius = do
+    toWidget
+        [julius|
+                $(function(){
+                    function likeMessage(link) {
+                        $.ajax({
+                            type: "POST",
+                            url: link.attr("message-url"),
+                        }).done(function(msg) {
+                            if (link.hasClass("red-text")) {
+                              link.removeClass("red-text");
+                              link.addClass("teal-text");
+                              link.children(".likeCount").html(parseInt(link.children(".likeCount").html(), 10)-1);
+                            } else {
+                              link.removeClass("teal-text");
+                              link.addClass("red-text");
+                              link.children(".likeCount").html(parseInt(link.children(".likeCount").html(), 10)+1);
+                            }
+                        });
+                    }
+                    $("a.like").click(function() {
+                        likeMessage($(this));
+                        return false;
+                    });
+                });
         |]

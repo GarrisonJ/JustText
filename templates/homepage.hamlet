@@ -18,28 +18,9 @@
           <a class="modal-trigger" href="#modal1">Help
 
   <body>
-      $forall (E.Value content, E.Value timestamp, E.Value messageid, E.Value username, E.Value userid) <- pageResults messages
-        <div .panel .panel-default>
-          <div class="row">
-            <div .card-panel .lighten-2 #message>
-                ^{renderMarkdown content}
-              <hr>
-              <div .panel-footer .center-align>
-                $with title <- getTitle content
-                  $if title /= ""
-                    <a href=@{MessageR messageid} .grey-text .text-lighten-1>
-                      #{title}
-                    |&nbsp;
-                <a href=@{MessageR messageid} .grey-text .text-lighten-1>
-                  #{formatTime defaultTimeLocale "%D" timestamp}
-                |
-                <a href=@{ProfileR userid} .grey-text .text-lighten-1>
-                  #{username}
-                $maybe (Entity uid _) <- mauth
-                  $if uid == userid
-                    |
-                    <a href=# message-url=@{MessageR messageid} .grey-text .text-lighten-1 .delete>
-                      <i class="mdi-action-delete">
+      $forall ( E.Value msgContent, E.Value msgTimestamp, E.Value msgUser, E.Value msgId, E.Value prflEmail, E.Value prflusername, E.Value prflUser, E.Value prflBio, E.Value likeCount, E.Value userLiked) <- pageResults messages
+        ^{renderMessageW' prflEmail prflusername prflUser prflBio msgContent msgTimestamp msgId likeCount userLiked}
+
     <div class="row">
       <ul class="pagination">
         $maybe p <- previousPage messages
