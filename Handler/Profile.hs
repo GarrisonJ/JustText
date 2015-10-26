@@ -57,6 +57,7 @@ getProfilePageR userId page = do
     -- Render layout
     defaultLayout $ do
         setTitle "Just text"
+        likeButtonJulius
         $(widgetFile "profilePaginates")
 
 postProfileR :: UserId -> Handler Html
