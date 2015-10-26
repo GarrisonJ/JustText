@@ -37,35 +37,20 @@
                     <button .btn .disabled type="submit">Follow
             $nothing
                     <button .btn .disabled type="submit">Follow
+    <body>
+      $forall (E.Value content, E.Value timestamp, E.Value messageid, E.Value likeCount, E.Value userLiked) <- pageResults messages
+        <div .messageBox>
+          ^{renderMessageW' (profileEmail p) (profileUsername p) (profileUser p) (profileBio p) content timestamp messageid likeCount userLiked}
+          $maybe (Entity uid _) <- mauth
+            $if uid == userId
+              <a href=# message-url=@{MessageR messageid} .grey-text .text-lighten-1 .delete>
+                <i class="mdi-action-delete">
+
+    <div class="row">
+      <ul class="pagination">
+        $maybe p <- previousPage messages
+          <li class="waves-effect"><a href=@{p}><i class="mdi-navigation-chevron-left"></i></a>
+        $maybe n <- nextPage messages
+          <li class="waves-effect"><a href=@{n}><i class="mdi-navigation-chevron-right"></i></a>
   $nothing
 
-  <ul .collection>
-    $forall (E.Value content, E.Value timestamp, E.Value messageid) <- pageResults messages
-      <li .collection-item>
-        <div .col>
-          <div .row #message>
-            ^{renderMarkdown content}
-
-          <div .center-align>
-
-            $with title <- getTitle content
-              $if title /= ""
-                <a href=@{MessageR messageid} .grey-text .text-lighten-1>
-                  #{title}
-                |&nbsp;
-
-            <a href=@{MessageR messageid} .grey-text .text-lighten-1>
-              #{formatTime defaultTimeLocale "%D" (timestamp)}
-
-            $maybe (Entity uid _) <- mauth
-              $if uid == userId
-                |
-                <a href=# message-url=@{MessageR messageid} .grey-text .text-lighten-1 .delete>
-                  <i class="mdi-action-delete">
-
-  <div class="row">
-    <ul class="pagination">
-      $maybe p <- previousPage messages
-        <li class="waves-effect"><a href=@{p}><i class="mdi-navigation-chevron-left"></i></a>
-      $maybe n <- nextPage messages
-        <li class="waves-effect"><a href=@{n}><i class="mdi-navigation-chevron-right"></i></a>

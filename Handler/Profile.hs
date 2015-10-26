@@ -23,14 +23,24 @@ getProfileR userId = getProfilePageR userId 0
 getProfilePageR :: UserId -> Int -> Handler Html
 getProfilePageR userId page = do
     -- Get every message posted by user
-    messages <- paginateWith (PageConfig 10 page (ProfileR userId) (ProfilePageR userId))$ \message -> do
-                  E.where_ $ message ^. MessageUser E.==. E.val userId
+    messages <- paginateWith (PageConfig 10 page HomeR PaginatesR)$
+                \(message `E.LeftOuterJoin` likes) -> do
+                  E.on (message ^. MessageId E.==. likes ^. LikeMessage)
+                  E.groupBy ( message   ^. MessageContent
+                            , message   ^. MessageTimestamp
+                            , message   ^. MessageUser
+                            , message   ^. MessageId
+                            )
+                  let likeCount = E.count (likes ^. LikeLover)
+                  let userLiked = E.count (likes ^. LikeLover E.==. E.val userId)
+                  E.where_ $ (message ^. MessageUser E.==. E.val userId)
                   E.orderBy [E.desc (message ^. MessageTimestamp)]
-                  return
-                      ( message   ^. MessageContent
-                      , message   ^. MessageTimestamp
-                      , message   ^. MessageId
-                      )
+                  return ( message   ^. MessageContent
+                         , message   ^. MessageTimestamp
+                         , message   ^. MessageId
+                         , likeCount
+                         , userLiked
+                         )
     -- Get profile info
     let gravatarSettings = def{gSize=Just (Size 200), gDefault=Just MM}
     profile <- runDB $ selectFirst [ProfileUser ==. userId] []

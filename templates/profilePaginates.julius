@@ -9,7 +9,7 @@ $(function(){
             type: "DELETE",
             url: link.attr("message-url"),
         }).done(function(msg) {
-            link.closest(".collection-item").remove();
+            link.closest(".messageBox").remove();
         });
     }
     $("a.delete").click(function() {
