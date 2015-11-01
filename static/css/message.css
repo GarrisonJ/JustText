@@ -1,0 +1,12 @@
+#message img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#message figure {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
+  vertical-align: middle;
+}
