@@ -34,7 +34,6 @@ import Handler.Common
 import Handler.Home
 import Handler.Profile
 import Handler.Settings
-import Handler.Paginates
 import Handler.Message
 import Handler.Landing
 import Handler.Like

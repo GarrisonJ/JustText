@@ -6,6 +6,7 @@ import Yesod.Markdown
 import Network.Gravatar
 import Text.Pandoc
 import Text.Pandoc.Shared
+import Handler.Like
 
 data TwitterMeta = TwitterMeta { creator :: Text
                                , title :: String
@@ -77,16 +78,6 @@ messageWhamlet message email userId username timestamp messageId userLiked numLi
                             <i class="mdi-action-delete">
           |]
 
-getUserLiked :: MessageId -> UserId -> Handler Bool
-getUserLiked messageId userId = do
-  like <- runDB $ selectFirst [LikeLover ==. userId, LikeMessage ==. messageId] []
-  case like of
-    Nothing -> return False
-    Just _ -> return True
-
-getNumberOfLikes :: MessageId -> Handler Int
-getNumberOfLikes messageId = runDB $ count [LikeMessage ==. messageId]
-
 renderMessageW' :: Text -> Text -> UserId -> Maybe Text -> Markdown -> UTCTime -> MessageId -> Int -> Int -> Maybe (Entity User) -> Widget
 renderMessageW' email username userId mBio content timestamp messageId numLikes userLiked mauth = do
     let gravatarSettings = def{gDefault=Just MM}
@@ -128,71 +119,3 @@ renderMarkdown m = do
               toWidget $ writePandoc yesodDefaultWriterOptions{writerHTMLMathMethod=(MathJax "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")} pan
         where
           pan = parseMarkdown yesodDefaultReaderOptions m
-
-navbar :: Maybe (Entity User) -> Widget
-navbar mauth = toWidget [hamlet|
-          <div class="row">
-            <nav>
-              <div .nav-wrapper .grey .lighten-3>
-                <a href=@{HomeR} .brand-logo>&nbsp;&#9646;&#9646;&#9646;
-                <ul .right>
-                  $maybe (Entity id _) <- mauth
-                    <li>
-                      <a href=@{ProfileR id}>Profile
-                    <li>
-                      <a href=@{SettingsR}>Settings
-                    <li>
-                      <a href=@{AuthR LogoutR}>Logout
-                  $nothing
-                    <li>
-                      <a href=@{LandingR}><i>Login</i>
-         |]
-
-
-likeButton :: MessageId -> Bool -> Int -> Widget
-likeButton messageId userLiked numLikes = do
-  likeButtonJulius
-  likeButtonHamlet messageId userLiked numLikes
-
-likeButtonHamlet :: MessageId -> Bool -> Int -> Widget
-likeButtonHamlet messageId userLiked numLikes =
-    toWidget
-        [hamlet|
-          <li>
-            $if userLiked
-              <a href=# message-url=@{LikeR messageId} .waves-effect .waves-light .red-text .like>
-                <span .likeCount>#{numLikes}
-                <i .mdi-action-favorite>
-            $else
-              <a href=# message-url=@{LikeR messageId} .waves-effect .waves-light .teal-text .like>
-                <span .likeCount>#{numLikes}
-                <i .mdi-action-favorite>
-        |]
-
-likeButtonJulius :: Widget
-likeButtonJulius = do
-    toWidget
-        [julius|
-                $(function(){
-                    function likeMessage(link) {
-                        $.ajax({
-                            type: "POST",
-                            url: link.attr("message-url"),
-                        }).done(function(msg) {
-                            if (link.hasClass("red-text")) {
-                              link.removeClass("red-text");
-                              link.addClass("teal-text");
-                              link.children(".likeCount").html(parseInt(link.children(".likeCount").html(), 10)-1);
-                            } else {
-                              link.removeClass("teal-text");
-                              link.addClass("red-text");
-                              link.children(".likeCount").html(parseInt(link.children(".likeCount").html(), 10)+1);
-                            }
-                        });
-                    }
-                    $("a.like").click(function() {
-                        likeMessage($(this));
-                        return false;
-                    });
-                });
-        |]

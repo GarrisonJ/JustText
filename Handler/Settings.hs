@@ -1,7 +1,7 @@
 module Handler.Settings where
 
 import Import
-import Handler.Widgets
+import Handler.Navbar
 import Network.Gravatar
 
 getSettingsR :: Handler Html

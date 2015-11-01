@@ -24,12 +24,12 @@ library
                      Handler.Home
                      Handler.Profile
                      Handler.Settings
-                     Handler.Paginates
                      Handler.Widgets
                      Handler.Message
                      Handler.Shapes
                      Handler.Landing
                      Handler.Like
+                     Handler.Navbar
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT

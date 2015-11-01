@@ -3,6 +3,8 @@ module Handler.Profile where
 import           Import
 import           Network.Gravatar
 import           Handler.Widgets
+import           Handler.Like
+import           Handler.Navbar
 import qualified Database.Esqueleto      as E
 import           Database.Esqueleto      ((^.))
 import           Yesod.Paginate
@@ -58,7 +60,7 @@ getProfilePageR userId page = do
     defaultLayout $ do
         setTitle "Just text"
         likeButtonJulius
-        $(widgetFile "profilePaginates")
+        $(widgetFile "profile")
 
 postProfileR :: UserId -> Handler Html
 postProfileR userId = do
