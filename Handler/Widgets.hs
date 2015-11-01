@@ -52,21 +52,7 @@ messageWhamlet :: Markdown -> Text -> UserId -> Text -> UTCTime -> MessageId -> 
 messageWhamlet message email userId username timestamp messageId userLiked numLikes mauth =
     let gravatarSettings = def{gDefault=Just MM}
         in do
-          toWidget [lucius|
-              #message img {
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-              }
-
-              #message figure {
-                margin-left: 0;
-                margin-right: 0;
-                margin-top: 0;
-                display: inline-block;
-                vertical-align: middle;
-              }
-          |]
+          addStylesheet $ StaticR css_message_css
           toWidget [whamlet|
           <div .messageBox>
             <ul .collection .z-depth-1>
