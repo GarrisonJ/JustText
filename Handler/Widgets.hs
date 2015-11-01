@@ -51,7 +51,23 @@ getTitle m = case (parseMarkdown def m) of
 messageWhamlet :: Markdown -> Text -> UserId -> Text -> UTCTime -> MessageId -> Bool -> Int -> Maybe (Entity User) -> Widget
 messageWhamlet message email userId username timestamp messageId userLiked numLikes mauth =
     let gravatarSettings = def{gDefault=Just MM}
-        in toWidget [whamlet|
+        in do
+          toWidget [lucius|
+              #message img {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+              }
+
+              #message figure {
+                margin-left: 0;
+                margin-right: 0;
+                margin-top: 0;
+                display: inline-block;
+                vertical-align: middle;
+              }
+          |]
+          toWidget [whamlet|
           <div .messageBox>
             <ul .collection .z-depth-1>
               <li .collection-item>
