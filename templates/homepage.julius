@@ -9,7 +9,7 @@ $(function(){
             type: "DELETE",
             url: link.attr("message-url"),
         }).done(function(msg) {
-            link.closest(".panel").remove();
+            link.closest(".messageBox").remove();
         });
     }
     $("a.delete").click(function() {
@@ -17,6 +17,15 @@ $(function(){
         return false;
     });
 });
+
+$("div.messageBox").hover(
+  function () {
+    $(this).find("a.delete").show();
+  },
+  function () {
+    $(this).find("a.delete").hide();
+  }
+);
 
 $(document).ready(function(){
   $('.modal-trigger').leanModal();

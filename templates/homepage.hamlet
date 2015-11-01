@@ -8,18 +8,17 @@
           <div id="editor">
             ^{formWidget}
             <div .panel .panel-default>
-              <div class="row">
-                <div .card-panel .lighten-2 #preview>
-                  <div class="row">
-                  <div v-html="input | marked">
-                  <div class="row">
+              <div .card-panel .lighten-2 #preview>
+                <div .row>
+                <div .row style="width:100%" v-html="input | marked">
+                <div .row>
 
           <button .btn type="submit">Post
           <a class="modal-trigger" href="#modal1">Help
 
   <body>
       $forall ( E.Value msgContent, E.Value msgTimestamp, E.Value msgUser, E.Value msgId, E.Value prflEmail, E.Value prflusername, E.Value prflUser, E.Value prflBio, E.Value likeCount, E.Value userLiked) <- pageResults messages
-        ^{renderMessageW' prflEmail prflusername prflUser prflBio msgContent msgTimestamp msgId likeCount userLiked}
+        ^{renderMessageW' prflEmail prflusername prflUser prflBio msgContent msgTimestamp msgId likeCount userLiked mauth}
 
     <div class="row">
       <ul class="pagination">

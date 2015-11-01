@@ -16,4 +16,14 @@ $(function(){
         confirmDelete($(this));
         return false;
     });
+    $("div.messageBox").hover(
+      function () {
+        $(this).find("a.delete").show();
+      },
+      function () {
+        $(this).find("a.delete").hide();
+      }
+    );
 });
+
+

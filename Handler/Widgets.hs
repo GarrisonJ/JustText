@@ -47,10 +47,11 @@ getTitle :: Markdown -> String
 getTitle m = case (parseMarkdown def m) of
               (Pandoc meta _) -> stringify $ docTitle meta
 
-messageWhamlet :: Markdown -> Text -> UserId -> Text -> UTCTime -> MessageId -> Bool -> Int -> Widget
-messageWhamlet message email userId username timestamp messageId userLiked numLikes =
+messageWhamlet :: Markdown -> Text -> UserId -> Text -> UTCTime -> MessageId -> Bool -> Int -> Maybe (Entity User) -> Widget
+messageWhamlet message email userId username timestamp messageId userLiked numLikes mauth =
     let gravatarSettings = def{gDefault=Just MM}
         in toWidget [whamlet|
+          <div .messageBox>
             <ul .collection .z-depth-1>
               <li .collection-item>
                 <div #message>
@@ -67,6 +68,13 @@ messageWhamlet message email userId username timestamp messageId userLiked numLi
                 <span .secondary-content>
                   <ul>
                     ^{likeButtonHamlet messageId userLiked numLikes}
+                    <li>
+                    <li>
+                    <li>
+                      $maybe (Entity uid _) <- mauth
+                        $if uid == userId
+                          <a href=# message-url=@{MessageR messageId} .grey-text .text-lighten-1 .delete style="display:none;">
+                            <i class="mdi-action-delete">
           |]
 
 getUserLiked :: MessageId -> UserId -> Handler Bool
@@ -79,22 +87,23 @@ getUserLiked messageId userId = do
 getNumberOfLikes :: MessageId -> Handler Int
 getNumberOfLikes messageId = runDB $ count [LikeMessage ==. messageId]
 
-renderMessageW' :: Text -> Text -> UserId -> Maybe Text -> Markdown -> UTCTime -> MessageId -> Int -> Int -> Widget
-renderMessageW' email username userId mBio content timestamp messageId numLikes userLiked' = do
+renderMessageW' :: Text -> Text -> UserId -> Maybe Text -> Markdown -> UTCTime -> MessageId -> Int -> Int -> Maybe (Entity User) -> Widget
+renderMessageW' email username userId mBio content timestamp messageId numLikes userLiked mauth = do
     let gravatarSettings = def{gDefault=Just MM}
         message          = content
-        userLiked = userLiked' > 0
+        userLiked' = userLiked > 0
     messageWhamlet message
                    email
                    userId
                    username
                    timestamp
                    messageId
-                   userLiked
+                   userLiked'
                    numLikes
+                   mauth
 
-renderMessageW :: Entity Message -> Profile -> Bool -> Int -> Widget
-renderMessageW em creator userLiked numLikes =
+renderMessageW :: Entity Message -> Profile -> Bool -> Int -> Maybe (Entity User) -> Widget
+renderMessageW em creator userLiked numLikes mauth =
   let gravatarSettings = def{gDefault=Just MM}
       messageId        = entityKey em
       message          = entityVal em
@@ -109,6 +118,7 @@ renderMessageW em creator userLiked numLikes =
                    messageId
                    userLiked
                    numLikes
+                   mauth
 
 renderMarkdown :: Markdown -> Widget
 renderMarkdown m = do
