@@ -57,7 +57,7 @@ messageWhamlet message email userId username timestamp messageId userLiked numLi
           <div .messageBox>
             <ul .collection .z-depth-1>
               <li .collection-item>
-                <div #message>
+                <div .message>
                   ^{renderMarkdown message}
               <li .collection-item .avatar>
                 <a href=@{ProfileR userId}>

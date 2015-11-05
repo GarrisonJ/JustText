@@ -12,7 +12,7 @@
               <button .btn type="submit">Post
               <a class="modal-trigger" href="#modal1">Help
             <div .panel .panel-default>
-              <div .card-panel .lighten-2 #preview>
+              <div .card-panel .lighten-2 #preview .message>
                 <div .row style="width:100%" v-html="input | marked">
 
 
