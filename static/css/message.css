@@ -10,3 +10,7 @@
   margin-top: 0;
   vertical-align: middle;
 }
+
+#message h1 {
+    text-align: center
+}
