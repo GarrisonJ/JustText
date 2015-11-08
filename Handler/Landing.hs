@@ -15,5 +15,5 @@ getLandingR :: Handler Html
 getLandingR = do
   user <- maybeAuth
   defaultLayout $ do
-    setTitle "Just Text"
+    setTitle "TTxTT"
     $(widgetFile "welcome")

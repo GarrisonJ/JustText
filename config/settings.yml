@@ -29,5 +29,5 @@ database:
   database: "_env:PGDATABASE:temp"
   poolsize: "_env:PGPOOLSIZE:10"
 
-copyright: © Just Text 2015
+copyright: © TTxTT 2015
 #analytics: UA-YOURCODE

@@ -7,7 +7,7 @@ spec = withApp $ do
     it "loads the index and checks it looks right" $ do
         get HomeR
         statusIs 200
-        htmlAllContain ".navbar-brand" "Just Text"
+        htmlAllContain ".navbar-brand" "TTxTT"
 
     it "loads and displays all messages" $ do
         get HomeR
