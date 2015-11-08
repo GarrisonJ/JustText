@@ -15,7 +15,7 @@ getSettingsR = do
             Just (Entity _ p) -> Just p
     (formWidget, formEnctype) <- generateFormPost $ settingsForm userId mprofile
     defaultLayout $ do
-        setTitle "Just text"
+        setTitle "TTxTT"
         $(widgetFile "settings")
 
 postSettingsR :: Handler ()

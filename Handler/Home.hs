@@ -77,7 +77,7 @@ getPaginatesR page = do
                               addScript $ StaticR node_modules_highlightjs_highlight_pack_min_js
                               addStylesheet $ StaticR node_modules_highlightjs_styles_arta_css
                               likeButtonJulius
-                              setTitle "Just text"
+                              setTitle "TTxTT"
                               $(widgetFile "homepage")
 
 messageForm :: UserId -> Form Message

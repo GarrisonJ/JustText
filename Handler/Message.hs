@@ -19,7 +19,7 @@ getMessageR messageId = do
                 Nothing             -> return Nothing
                 (Just (Entity _ m)) -> runDB $ selectFirst [ProfileUser ==. messageUser m] []
     defaultLayout $ do
-        setTitle "Just text"
+        setTitle "TTxTT"
         $(widgetFile "message")
 
 deleteMessageR :: MessageId -> Handler Html

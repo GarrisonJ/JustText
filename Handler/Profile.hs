@@ -58,7 +58,7 @@ getProfilePageR userId page = do
                                 Nothing -> generateFormPost $ followForm userId userId -- invald user
     -- Render layout
     defaultLayout $ do
-        setTitle "Just text"
+        setTitle "TTxTT"
         likeButtonJulius
         $(widgetFile "profile")
 
