@@ -22,13 +22,13 @@
             $maybe (Entity id _ )  <- mauth
               $if not (id == profileUser p)
                 $maybe _ <- oldFollowStatus
-                  <form method=post action=@{ProfileR userId}#form enctype=#{formEnctype}>
+                  <form method=post action=@{ProfileR userProfileId}#form enctype=#{formEnctype}>
                       <div>
                         ^{formWidget}
                       <div>
                         <button .btn type="submit">Unfollow
                 $nothing
-                  <form method=post action=@{ProfileR userId}#form enctype=#{formEnctype}>
+                  <form method=post action=@{ProfileR userProfileId}#form enctype=#{formEnctype}>
                       <div>
                         ^{formWidget}
                       <div>
@@ -38,14 +38,14 @@
             $nothing
                     <button .btn .disabled type="submit">Follow
     <body>
-      $forall (E.Value content, E.Value timestamp, E.Value messageid, E.Value likeCount, E.Value userLiked) <- pageResults messages
-          ^{renderMessageW' (profileEmail p) (profileUsername p) (profileUser p) (profileBio p) content timestamp messageid likeCount userLiked mauth}
+      $forall (content, timestamp, messageId, likeCount, userLiked) <- messages
+        ^{renderMessageW' (profileEmail p) (profileUsername p) (profileUser p) (profileBio p) content timestamp messageId (likeCount) userLiked mauth}
 
     <div class="row">
       <ul class="pagination">
-        $maybe p <- previousPage messages
+        $maybe p <- previousPage currentPage
           <li class="waves-effect"><a href=@{p}><i class="mdi-navigation-chevron-left"></i></a>
-        $maybe n <- nextPage messages
+        $maybe n <- nextPage currentPage
           <li class="waves-effect"><a href=@{n}><i class="mdi-navigation-chevron-right"></i></a>
   $nothing
     <h1> Nobody is here.

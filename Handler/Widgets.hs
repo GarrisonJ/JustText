@@ -80,27 +80,23 @@ messageWhamlet message email userId username timestamp messageId userLiked numLi
                             <i class="mdi-action-delete">
           |]
 
-renderMessageW' :: Text -> Text -> UserId -> Maybe Text -> Markdown -> UTCTime -> MessageId -> Int -> Int -> Maybe (Entity User) -> Widget
+renderMessageW' :: Text -> Text -> UserId -> Maybe Text -> Markdown -> UTCTime -> MessageId -> Int -> Bool -> Maybe (Entity User) -> Widget
 renderMessageW' email username userId mBio content timestamp messageId numLikes userLiked mauth = do
     let gravatarSettings = def{gDefault=Just MM}
         message          = content
-        userLiked' = userLiked > 0
     messageWhamlet message
                    email
                    userId
                    username
                    timestamp
                    messageId
-                   userLiked'
+                   userLiked
                    numLikes
                    mauth
 
-renderMessageW :: Entity Message -> Profile -> Bool -> Int -> Maybe (Entity User) -> Widget
-renderMessageW em creator userLiked numLikes mauth =
-  let gravatarSettings = def{gDefault=Just MM}
-      messageId        = entityKey em
-      message          = entityVal em
-  in do
+renderMessageW :: Message -> MessageId -> Profile -> Bool -> Int -> Maybe (Entity User) -> Widget
+renderMessageW message messageId creator userLiked numLikes mauth = do
+    let gravatarSettings = def{gDefault=Just MM}
     renderTwitterMetta message creator
     likeButtonJulius
     messageWhamlet (messageContent message)

@@ -4,14 +4,17 @@ module Handler.Home where
 import           Import
 import qualified Database.Esqueleto as E
 import           Database.Esqueleto ((^.))
-import           Yesod.Markdown
-import           Yesod.Paginate
 import           Handler.Like
 import           Handler.Widgets
+import           Yesod.Markdown
+import           Yesod.Paginate
 import           Handler.Navbar
 
 getHomeR :: Handler Html
-getHomeR = redirect (PaginatesR 0)
+getHomeR = getPaginatesR 0
+
+makeInt :: Int -> Int
+makeInt = id
 
 postHomeR :: Handler Html
 postHomeR = do
@@ -26,6 +29,7 @@ postHomeR = do
 
 getPaginatesR :: Int -> Handler Html
 getPaginatesR page = do
+    -- TODO: Fix ... whut are you doing
     uid <- requireAuthId
     mauth <- maybeAuth
     followSelf <- runDB $ selectFirst [FollowFollower ==. uid, FollowFollowee ==. uid] []
@@ -55,6 +59,7 @@ getPaginatesR page = do
                       , message   ^. MessageTimestamp
                       , message   ^. MessageUser
                       , message   ^. MessageId
+                      , message   ^. MessageNonAuthLikeCount
                       , profile   ^. ProfileEmail
                       , profile   ^. ProfileUsername
                       , profile   ^. ProfileUser
@@ -62,6 +67,12 @@ getPaginatesR page = do
                       , likeCount
                       , userLiked
                       )
+
+    messages' <- mapM
+                (\(a,b,c,d@(E.Value msgId),e,f,g,h,i,j,k) -> do
+                    unauthLike <- didUnauthLike (msgId :: MessageId)
+                    return (a,b,c,d,e,f,g,h,i,j,k, unauthLike))
+                (pageResults messages)
 
     (formWidget, formEnctype) <- generateFormPost $ messageForm uid
     -- Get profile info
@@ -85,5 +96,6 @@ messageForm user = renderDivs $ Message
     <$> areq markdownField markSettings Nothing
     <*> pure user
     <*> lift (liftIO getCurrentTime)
+    <*> pure 0
   where
     markSettings = "" {fsAttrs = [("v-model", "input"), ("debounce", "300")], fsId = Just "textInput"}

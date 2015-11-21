@@ -13,6 +13,7 @@ Message
     content Markdown
     user UserId
     timestamp UTCTime Desc
+    nonAuthLikeCount Int default=0
 Follow
     follower UserId Eq
     followee UserId
@@ -21,4 +22,5 @@ Follow
 Like
     lover UserId Eq
     message MessageId
+    UniqueLike lover message
  -- By default this file is used in Model.hs (which is imported by Foundation.hs)

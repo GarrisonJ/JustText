@@ -2,25 +2,25 @@ module Handler.Message where
 
 import Import
 import Handler.Widgets
+import Handler.Like
 
 getMessageR :: MessageId -> Handler Html
 getMessageR messageId = do
     mauth     <- maybeAuth
-    message   <- runDB $ selectFirst [MessageId ==. messageId] []
+    message   <- runDB $ get404 messageId
     numLikes  <- runDB $ count [LikeMessage ==. messageId]
     userLiked <- case mauth of
-                   Nothing  -> return False
+                   Nothing  -> didUnauthLike messageId
                    (Just (Entity m _)) -> do
                               l <- runDB $ selectFirst [LikeMessage ==. messageId, LikeLover ==. m] []
                               case l of
                                 Nothing -> return False
                                 _       -> return True
-    creator <- case message of
-                Nothing             -> return Nothing
-                (Just (Entity _ m)) -> runDB $ selectFirst [ProfileUser ==. messageUser m] []
+    creator <- runDB $ selectFirst [ProfileUser ==. messageUser message] []
     defaultLayout $ do
         setTitle "TTxTT"
         $(widgetFile "message")
+
 
 deleteMessageR :: MessageId -> Handler Html
 deleteMessageR messageId = do

@@ -2,25 +2,62 @@
 module Handler.Like where
 
 import Import
+import qualified Data.List as L
+import Text.Read
+
+likesSessionKey :: Text
+likesSessionKey = "Likes"
+
+deleteAllUnauthLikes :: Handler ()
+deleteAllUnauthLikes = deleteSession likesSessionKey
+
+didLike :: Maybe a -> Bool -> Bool -> Bool
+didLike mauth unAuthLiked authLiked =
+            case mauth of
+                   Nothing  -> unAuthLiked
+                   (Just _) -> authLiked
+
+getUnauthLikes :: Handler ([MessageId])
+getUnauthLikes = do
+          likes' <- lookupSession likesSessionKey
+          case likes' of
+            Nothing -> return []
+            (Just likes) -> case readMaybe (unpack likes) of
+                                Nothing -> deleteSession likesSessionKey >> return []
+                                (Just l) -> return l
+
+didUnauthLike :: MessageId -> Handler (Bool)
+didUnauthLike messageId = do
+        alreadyLike <- getUnauthLikes
+        return $ messageId `elem` alreadyLike
 
 postLikeR :: MessageId -> Handler ()
 postLikeR messageId = do
-    user <- requireAuthId
-    like <- runDB $ selectFirst [LikeLover ==. user, LikeMessage ==. messageId] []
-    message <- runDB $ selectFirst [MessageId ==. messageId] []
-    case message of
-      Nothing -> return ()
-      _ -> case like of
-              (Just _) -> deleteLikeR messageId
-              _       -> do
-                          _ <- runDB $ insert (Like user messageId)
-                          return ()
+    mUser <- maybeAuthId
+    message <- runDB $ get404 messageId
+    case mUser of
+      Nothing     -> handleNonauthLike messageId
+      (Just user) -> handleAuthUserLike user messageId
+  where
+    handleNonauthLike messageId = do
+        alreadyLike' <- lookupSession likesSessionKey
+        let alreadyLike = case alreadyLike' of
+                                  Nothing -> [] :: [MessageId]
+                                  (Just l) -> read $ unpack l :: [MessageId]
+        case messageId `elem` alreadyLike of
+          False -> do
+            setSession likesSessionKey (pack $ show $ messageId:alreadyLike)
+            runDB $ update messageId [MessageNonAuthLikeCount +=. 1]
+          True -> do
+            setSession likesSessionKey (pack $ show $ L.delete messageId alreadyLike)
+            runDB $ update messageId [MessageNonAuthLikeCount -=. 1]
 
-deleteLikeR :: MessageId -> Handler ()
-deleteLikeR messageId = do
-    user <- requireAuthId
-    _ <- runDB $ deleteWhere [LikeLover ==. user, LikeMessage ==. messageId]
-    return ()
+    handleAuthUserLike user messageId = do
+        like <- runDB $ selectFirst [LikeLover ==. user, LikeMessage ==. messageId] []
+        case like of
+          (Just _) -> void $ runDB $ deleteWhere [LikeLover ==. user, LikeMessage ==. messageId]
+          _        -> void $ runDB $ insert (Like user messageId)
+
 
 likeButton :: MessageId -> Bool -> Int -> Widget
 likeButton messageId userLiked numLikes = do

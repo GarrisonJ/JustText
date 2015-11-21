@@ -5,11 +5,12 @@
 /robots.txt RobotsR GET
 
 /                     HomeR          GET POST
+/move/likes           MoveLikesHomeR GET
 /s/ettings            SettingsR      GET POST
 /page/#Int            PaginatesR     GET
 /m/#MessageId         MessageR       GET DELETE
 /w/elcome             LandingR       GET
-/like/#MessageId      LikeR          POST DELETE
+/like/#MessageId      LikeR          POST
 !/#Text               UserProfileR   GET
 /p/#UserId            ProfileR       GET POST
 /p/#UserId/#Int       ProfilePageR   GET

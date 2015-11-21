@@ -17,8 +17,9 @@
 
 
   <body>
-      $forall ( E.Value msgContent, E.Value msgTimestamp, E.Value msgUser, E.Value msgId, E.Value prflEmail, E.Value prflusername, E.Value prflUser, E.Value prflBio, E.Value likeCount, E.Value userLiked) <- pageResults messages
-        ^{renderMessageW' prflEmail prflusername prflUser prflBio msgContent msgTimestamp msgId likeCount userLiked mauth}
+      $forall (E.Value msgContent, E.Value msgTimestamp, E.Value msgUser, E.Value msgId, E.Value msgNonAuthLikeCount, E.Value prflEmail, E.Value prflusername, E.Value prflUser, E.Value prflBio, E.Value likeCount, E.Value userLiked, nonAuthLiked ) <- messages'
+        $with liked <- didLike mauth nonAuthLiked (makeInt userLiked > 0)
+          ^{renderMessageW' prflEmail prflusername prflUser prflBio msgContent msgTimestamp msgId (likeCount + msgNonAuthLikeCount) liked mauth}
 
     <div class="row">
       <ul class="pagination">

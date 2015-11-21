@@ -30,6 +30,7 @@ library
                      Handler.Landing
                      Handler.Like
                      Handler.Navbar
+                     Handler.MoveLikesHome
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT
