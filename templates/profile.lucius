@@ -1,0 +1,9 @@
+.profile-header {
+  padding:0;
+  border: 10px solid rgba(255, 255, 255, .5);
+}
+
+.profile-name-header {
+  font-style: italic;
+  font-size: 200%;
+}

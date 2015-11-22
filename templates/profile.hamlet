@@ -2,11 +2,10 @@
 
 <div .container>
   $maybe Entity _ p <- profile
-    <div .row>
+    <div .row .grey .lighten-4 .profile-header>
       <div .col .s12>
-        <div .row>
-        <div .row>
-          <h2 .center-align> #{profileUsername p}
+        <div .center-align>
+          <p .flow-text .profile-name-header>#{profileUsername p}
         <div .row>
         <div .row>
           <div .center-align>

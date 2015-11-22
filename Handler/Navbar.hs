@@ -2,6 +2,7 @@ module Handler.Navbar where
 
 import Import
 
+-- 626262
 navbar :: Maybe (Entity User) -> Widget
 navbar mauth = do
         addStylesheetRemote "https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -9,10 +10,10 @@ navbar mauth = do
           $(".button-collapse").sideNav();
         |]
         toWidget [hamlet|
-          <div class="row">
-            <nav>
-              <div .nav-wrapper .grey .lighten-3>
-                <a href=@{HomeR} .brand-logo>&nbsp;&#9646;&#9646;&#9646;
+          <div class="navbar-fixed">
+            <nav .transparent style="box-shadow: none;">
+              <div .nav-wrapper .transparent>
+                <a href=@{HomeR} .brand-logo .white-text>&nbsp;&#9646;&#9646;&#9646;
                 $maybe (Entity id _) <- mauth
                   <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
                   <ul .right .hide-on-med-and-down>
@@ -32,7 +33,7 @@ navbar mauth = do
                 $nothing
                   <ul .right>
                     <li>
-                      <a href=@{LandingR} >Login
+                      <a href=@{LandingR}>Login
          |]
 
 

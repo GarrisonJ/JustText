@@ -54,12 +54,12 @@ messageWhamlet message email userId username timestamp messageId userLiked numLi
         in do
           addStylesheet $ StaticR css_message_css
           toWidget [whamlet|
-          <div .messageBox>
-            <ul .collection .z-depth-1>
-              <li .collection-item>
+          <div .messageBox .grey .lighten-5>
+            <ul .collection .z-depth-1 .grey .lighten-5>
+              <li .collection-item .grey .lighten-5>
                 <div .message>
                   ^{renderMarkdown message}
-              <li .collection-item .avatar>
+              <li .collection-item .avatar .grey .lighten-5>
                 <a href=@{ProfileR userId}>
                   <img src=#{gravatar gravatarSettings email} alt="" class="circle">
                 <span .title>
