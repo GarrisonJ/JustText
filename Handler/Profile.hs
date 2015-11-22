@@ -90,7 +90,7 @@ getMessagesForAuthUser :: (YesodPersist site, YesodPersistBackend site ~ SqlBack
                                    Int,
                                    Bool)])
 getMessagesForAuthUser userProfileId userId page = do
-    currentPage <- paginateWith (PageConfig 10 page HomeR PaginatesR)$
+    currentPage <- paginateWith (PageConfig 10 page HomeR (ProfilePageR userProfileId))$
                 \(message `E.LeftOuterJoin` likes) -> do
                   E.on $ message ^. MessageId E.==. likes ^. LikeMessage
                   E.groupBy ( message   ^. MessageContent
@@ -141,7 +141,7 @@ getMessagesForUnauthUser :: Key User -> Int
                Int,
                Bool)])
 getMessagesForUnauthUser userProfileId page = do
-    currentPage <- paginateWith (PageConfig 10 page HomeR PaginatesR)$
+    currentPage <- paginateWith (PageConfig 10 page HomeR (ProfilePageR userProfileId))$
                 \(message `E.LeftOuterJoin` likes) -> do
                   E.on $ message ^. MessageId E.==. likes ^. LikeMessage
                   E.groupBy ( message   ^. MessageContent
