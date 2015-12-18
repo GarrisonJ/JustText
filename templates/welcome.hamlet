@@ -7,16 +7,17 @@
       <div .row>
       <div .row>
         <div .col .l6 .hide-on-med-and-down>
-          <h3 .center .amber-text .text-lighten style="font-weight:600;">Be
-          <h3 .center .amber-text .text-lighten style="font-weight:300;font-style: italic;">&lt;i&gt;Internet.&lt;/i&gt;
-          <h3 .center .amber-text .text-lighten-2 style="font-weight:600;">Feel
-          <h3 .center .amber-text .text-lighten-2 style="font-weight:300;font-style: italic;">&lt;i&gt;Better.&lt;/i&gt;
+          <h3 .center .amber-text .text-lighten   style="font-weight:600;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TTxTT
+          <h3 .center .amber-text .text-lighten-1 style="font-weight:300;">TTxTT
+          <h3 .center .amber-text .text-lighten-2 style="font-weight:600;">&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TTxTT
+          <h3 .center .amber-text .text-lighten-3 style="font-weight:300;">TTxTT
+          <h3 .center .amber-text .text-lighten-4 style="font-weight:600;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TTxTT
+          <h3 .center .amber-text .text-lighten-5 style="font-weight:300;">TTxTT
 
         <div .col .l6 .s12 .card-panel>
           <div .row>
             <h1 .center .grey-text .text-lighten-2>&#9646;&#9646;&#9646;
             <h1 .center .grey-text .text-lighten-2 style="font-weight:200;">TTxTT
-              <sub .grey-text style="font-weight:200; font-size:20%;">beta
           <div .row>
             <div .col .s12>
               <div>
