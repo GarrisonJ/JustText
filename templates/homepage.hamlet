@@ -16,10 +16,12 @@
                 <div .row style="width:100%" v-html="input | marked">
 
 
-  <body>
-      $forall (E.Value msgContent, E.Value msgTimestamp, E.Value msgUser, E.Value msgId, E.Value msgNonAuthLikeCount, E.Value prflEmail, E.Value prflusername, E.Value prflUser, E.Value prflBio, E.Value likeCount, E.Value userLiked, nonAuthLiked ) <- messages'
-        $with liked <- didLike mauth nonAuthLiked (makeInt userLiked > 0)
-          ^{renderMessageW' prflEmail prflusername prflUser prflBio msgContent msgTimestamp msgId (likeCount + msgNonAuthLikeCount) liked mauth}
+<div .row>
+  <div .col .l2 .hide-on-med-and-down>&nbsp;
+  <div .col .l8 .m12 .s12 style="padding:0;">
+    $forall (E.Value msgContent, E.Value msgTimestamp, E.Value msgUser, E.Value msgId, E.Value msgNonAuthLikeCount, E.Value prflEmail, E.Value prflusername, E.Value prflUser, E.Value prflBio, E.Value likeCount, E.Value userLiked, nonAuthLiked ) <- messages'
+      $with liked <- didLike mauth nonAuthLiked (makeInt userLiked > 0)
+        ^{renderMessageW' prflEmail prflusername prflUser prflBio msgContent msgTimestamp msgId (likeCount + msgNonAuthLikeCount) liked mauth}
 
     <div class="row">
       <ul class="pagination">
@@ -27,28 +29,29 @@
           <li class="waves-effect"><a href=@{p}><i class="mdi-navigation-chevron-left"></i></a>
         $maybe n <- nextPage messages
           <li class="waves-effect"><a href=@{n}><i class="mdi-navigation-chevron-right"></i></a>
+  <div .col .l2 .hide-on-med-and-down>&nbsp;
 
-  <div id="modal1" class="modal" style="display: none; opacity: 1; bottom: 0px;">
-    <div class="modal-content">
-      <h1> Markdown
-      <p> Everything is markdown. Here are the basics/everything you need.
+<div id="modal1" class="modal" style="display: none; opacity: 1; bottom: 0px;">
+  <div class="modal-content">
+    <h1> Markdown
+    <p> Everything is markdown. Here are the basics/everything you need.
 
-      <h3> Headers
-      <p> # header
-      <p> ## Subheader
+    <h3> Headers
+    <p> # header
+    <p> ## Subheader
 
-      <h3> Text
-      <p> **Bold**
-      <p> _italic_
+    <h3> Text
+    <p> **Bold**
+    <p> _italic_
 
-      <h3> Image
-      <p> ![alt text](image url)
+    <h3> Image
+    <p> ![alt text](image url)
 
-      <h3> Links
-      <p> [Cool website](http://www.ttxtt.io/)
+    <h3> Links
+    <p> [Cool website](http://www.ttxtt.io/)
 
-      <h3> Code
-      <p> ```ruby <br> puts "That's all folks" <br>```
+    <h3> Code
+    <p> ```ruby <br> puts "That's all folks" <br>```
 
-      <p> <a href="http://daringfireball.net/projects/markdown/basics" target="_blank"> more </a>
+    <p> <a href="http://daringfireball.net/projects/markdown/basics" target="_blank"> more </a>
 
