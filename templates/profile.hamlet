@@ -1,51 +1,54 @@
 ^{navbar mauth}
 
-<div .container>
   $maybe Entity _ p <- profile
-    <div .row .grey .lighten-4 .profile-header>
-      <div .col .s12>
-        <div .center-align>
-          <p .flow-text .profile-name-header>#{profileUsername p}
-        <div .row>
-        <div .row>
+    <div .container>
+      <div .row .grey .lighten-4 .profile-header>
+        <div .col .s12>
           <div .center-align>
-            <img src=#{gravatar gravatarSettings (profileEmail p)} .circle .responsive-img .z-depth-1>
-        <div .row>
-        <div .row>
-        <div .center-align>
-          $maybe pbio <- profileBio p
-            <p .flow-text>#{toHtml (pbio)}
-        <div .row>
-        <div .row>
+            <p .flow-text .profile-name-header>#{profileUsername p}
+          <div .row>
+          <div .row>
+            <div .center-align>
+              <img src=#{gravatar gravatarSettings (profileEmail p)} .circle .responsive-img .z-depth-1>
+          <div .row>
+          <div .row>
           <div .center-align>
-            $maybe (Entity id _ )  <- mauth
-              $if not (id == profileUser p)
-                $maybe _ <- oldFollowStatus
-                  <form method=post action=@{ProfileR userProfileId}#form enctype=#{formEnctype}>
-                      <div>
-                        ^{formWidget}
-                      <div>
-                        <button .btn type="submit">Unfollow
-                $nothing
-                  <form method=post action=@{ProfileR userProfileId}#form enctype=#{formEnctype}>
-                      <div>
-                        ^{formWidget}
-                      <div>
-                        <button .btn type="submit">Follow
-              $else
-                    <button .btn .disabled type="submit">Follow
-            $nothing
-                    <button .btn .disabled type="submit">Follow
-    <body>
-      $forall (content, timestamp, messageId, likeCount, userLiked) <- messages
-        ^{renderMessageW' (profileEmail p) (profileUsername p) (profileUser p) (profileBio p) content timestamp messageId (likeCount) userLiked mauth}
+            $maybe pbio <- profileBio p
+              <p .flow-text>#{toHtml (pbio)}
+          <div .row>
+          <div .row>
+            <div .center-align>
+              $maybe (Entity id _ )  <- mauth
+                $if not (id == profileUser p)
+                  $maybe _ <- oldFollowStatus
+                    <form method=post action=@{ProfileR userProfileId}#form enctype=#{formEnctype}>
+                        <div>
+                          ^{formWidget}
+                        <div>
+                          <button .btn type="submit">Unfollow
+                  $nothing
+                    <form method=post action=@{ProfileR userProfileId}#form enctype=#{formEnctype}>
+                        <div>
+                          ^{formWidget}
+                        <div>
+                          <button .btn type="submit">Follow
+                $else
+                      <button .btn .disabled type="submit">Follow
+              $nothing
+                      <button .btn .disabled type="submit">Follow
+    <div .row>
+      <div .col .l2 .hide-on-med-and-down>&nbsp;
+      <div .col .l8 .m12 .s12 style="padding:0;">
+        $forall (content, timestamp, messageId, likeCount, userLiked) <- messages
+          ^{renderMessageW' (profileEmail p) (profileUsername p) (profileUser p) (profileBio p) content timestamp messageId (likeCount) userLiked mauth}
 
-    <div class="row">
-      <ul class="pagination">
-        $maybe p <- previousPage currentPage
-          <li class="waves-effect"><a href=@{p}><i class="mdi-navigation-chevron-left"></i></a>
-        $maybe n <- nextPage currentPage
-          <li class="waves-effect"><a href=@{n}><i class="mdi-navigation-chevron-right"></i></a>
+        <div .row>
+          <ul class="pagination">
+            $maybe p <- previousPage currentPage
+              <li class="waves-effect"><a href=@{p}><i class="mdi-navigation-chevron-left"></i></a>
+            $maybe n <- nextPage currentPage
+              <li class="waves-effect"><a href=@{n}><i class="mdi-navigation-chevron-right"></i></a>
+      <div .col .l2 .hide-on-med-and-down>&nbsp;
   $nothing
     <h1> Nobody is here.
 
